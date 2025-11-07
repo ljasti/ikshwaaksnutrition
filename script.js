@@ -377,3 +377,6 @@ style.textContent = `
 document.head.appendChild(style);
 
 console.log('Ikshwaaks Nutrition website loaded successfully!');
+
+// Check if there are any company name references in JavaScript
+// (No changes needed as the JS doesn't contain company name references)
