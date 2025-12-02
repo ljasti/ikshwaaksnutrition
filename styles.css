@@ -50,14 +50,14 @@ body {
 
 .header-brand h2 {
     margin: 0;
-    font-size: 1.1rem;
+    font-size: 1.35rem;
     font-weight: 700;
     color: var(--primary-dark);
 }
 
 .header-brand .tagline {
     display: block;
-    font-size: 0.75rem;
+    font-size: 0.9rem;
     color: var(--text-light);
     font-weight: 500;
 }
@@ -152,7 +152,7 @@ body {
 /* Hero Section */
 .hero {
     background: transparent;
-    padding: 100px 0 80px;
+    padding: 140px 0 80px;
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -945,7 +945,7 @@ html {
 }
 
 .logo-img {
-    height: clamp(32px, 4.5vw, 46px);
+    height: clamp(40px, 6vw, 64px);
     width: auto;
     object-fit: contain;
 }
@@ -983,10 +983,10 @@ html {
 
 .video-banner {
     position: fixed;
-    top: 0;
+    top: 100px;
     left: 0;
     width: 100%;
-    height: 100vh;
+    height: calc(100vh - 100px);
     z-index: -1;
     overflow: hidden;
     pointer-events: none;
@@ -1000,7 +1000,7 @@ html {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: 50% 35%;
+    object-position: 50% 0%;
 }
 
 .video-banner::after {
@@ -1061,7 +1061,7 @@ html {
 /* Responsive adjustments for logos */
 @media (max-width: 768px) {
     .logo-img {
-        height: 36px;
+        height: 48px;
     }
     
     .logo-text h2 {
