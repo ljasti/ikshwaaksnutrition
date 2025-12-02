@@ -3,23 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Srivallabha Industries - Healthy Living Solutions</title>
+    <title>Srivallabha Sustainable Solutions, A Healthy Living Solutions</title>
     <meta name="description" content="Srivallabha Industries Pvt Ltd - Premium health drinks, dried vegetable powders, ready-to-eat curry mixes, and fresh microgreens for healthy living.">
+    <meta name="theme-color" content="#fc904d">
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" type="image/svg+xml" href="images/svg/amrot_logo.svg">
+    <link rel="alternate icon" type="image/png" href="images/amrot_logo.png">
 </head>
 <body>
     <!-- Header -->
     <header class="header">
+        <div class="header-brand">
+            <h2>Srivallabha Sustainable Solutions</h2>
+            <span class="tagline">A Healthy Living Solutions</span>
+        </div>
         <nav class="navbar">
             <div class="nav-container">
                 <div class="nav-logo">
-                    <img src="images/amrot_logo.png" alt="Ikshwaaks Nutrition Logo" class="logo-img">
-                    <div class="logo-text">
-                        <h2>Ikshwaaks Nutrition</h2>
-                        <span class="tagline">Healthy Living Solutions</span>
-                    </div>
+                    <a href="#home" class="logo-link" aria-label="Go to top">
+                        <img src="images/svg/amrot_logo.svg" alt="Amrot Logo" class="logo-img" fetchpriority="high">
+                    </a>
                 </div>
                 <ul class="nav-menu">
                     <li class="nav-item">
@@ -29,6 +34,12 @@
                         <a href="#products" class="nav-link">Products</a>
                     </li>
                     <li class="nav-item">
+                        <a href="#ingredients" class="nav-link">Ingredients</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#nutrition" class="nav-link">Nutrition</a>
+                    </li>
+                    <li class="nav-item">
                         <a href="#about" class="nav-link">About</a>
                     </li>
                     <li class="nav-item">
@@ -36,6 +47,9 @@
                     </li>
                     <li class="nav-item">
                         <a href="#contact" class="nav-link">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#faq" class="nav-link">FAQ</a>
                     </li>
                 </ul>
                 <div class="hamburger">
@@ -51,10 +65,10 @@
     <section id="home" class="hero">
         <div class="hero-container">
             <div class="hero-content">
-                <h1 class="hero-title">Nourishing Lives with <span class="highlight">Natural Nutrition</span></h1>
+                <h1 class="hero-title">Nourish Your Body With Nature's Goodness</h1>
                 <p class="hero-description">
-                    Srivallabha Industries brings you premium health drinks, nutrient-rich powders, 
-                    ready-to-eat meals, and fresh microgreens for a healthier lifestyle.
+                    A premium superfood blend made with multi-grains, millets, pulses, nuts, and seeds —
+                    along with microgreens and mushrooms — for complete daily nutrition.
                 </p>
                 <div class="hero-buttons">
                     <a href="#products" class="btn btn-primary">Explore Products</a>
@@ -62,7 +76,125 @@
                 </div>
             </div>
             <div class="hero-image">
-                <img src="images/allProducts.png" alt="Ikshwaaks Nutrition Products" class="hero-product-img">
+                <img src="images/allProducts.png" alt="Amrot Products" class="hero-product-img" fetchpriority="high">
+            </div>
+        </div>
+    </section>
+
+    <section id="advantages" class="infrastructure">
+        <div class="container">
+            <div class="section-header">
+                <h2>Advantages of Amrot</h2>
+                <p>Daily superfood benefits for every age</p>
+            </div>
+            <div class="infrastructure-grid">
+                <div class="infra-card">
+                    <ul class="product-features">
+                        <li><i class="fas fa-check"></i> Pure and wholesome – made from multi-grains, millets, nuts & seeds.</li>
+                        <li><i class="fas fa-check"></i> Safe alternative to adulterated milk.</li>
+                        <li><i class="fas fa-check"></i> Balanced nutrition covering proteins, carbs, fiber, vitamins, and minerals.</li>
+                        <li><i class="fas fa-check"></i> Suitable for people of all ages.</li>
+                        <li><i class="fas fa-check"></i> Boosts energy, immunity, muscle strength, and digestion.</li>
+                        <li><i class="fas fa-check"></i> Improves bone health, brain activity, and heart health.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="ingredients" class="infrastructure">
+        <div class="container">
+            <div class="section-header">
+                <h2>Ingredients Classification</h2>
+                <p>Powered by pulses, millets, grains, nuts, and seeds</p>
+            </div>
+            <div class="infrastructure-grid">
+                <div class="infra-card">
+                    <h3>Pulses (Protein-Rich)</h3>
+                    <ul>
+                        <li>Brown Chana (Desi Chickpeas)</li>
+                        <li>Green Gram / Moong Dal</li>
+                        <li>Black Gram / Urad Dal</li>
+                    </ul>
+                </div>
+                <div class="infra-card">
+                    <h3>Millets (Fiber & Minerals)</h3>
+                    <ul>
+                        <li>Ragi / Finger Millet</li>
+                        <li>Sorghum / Jowar</li>
+                        <li>Pearl Millet / Bajra</li>
+                        <li>Foxtail Millet</li>
+                    </ul>
+                </div>
+                <div class="infra-card">
+                    <h3>Grains & Cereals (Energy)</h3>
+                    <ul>
+                        <li>Rice</li>
+                        <li>Barley</li>
+                        <li>Whole Wheat</li>
+                        <li>Oats</li>
+                        <li>Maize / Corn</li>
+                    </ul>
+                </div>
+                <div class="infra-card">
+                    <h3>Nuts (Healthy Fats)</h3>
+                    <ul>
+                        <li>Cashew Nuts</li>
+                        <li>Pistachios</li>
+                        <li>Walnut</li>
+                        <li>Almonds</li>
+                    </ul>
+                </div>
+                <div class="infra-card">
+                    <h3>Seeds (Mineral & Omega)</h3>
+                    <ul>
+                        <li>Flax Seeds</li>
+                        <li>Sesame Seeds</li>
+                        <li>Pumpkin Seeds</li>
+                        <li>Watermelon Seeds</li>
+                        <li>Sunflower Seeds</li>
+                        <li>Cumin, Fenugreek, Ajwain, Coriander</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="nutrition" class="infrastructure">
+        <div class="container">
+            <div class="section-header">
+                <h2>Nutritional Richness in Amrot</h2>
+                <p>Macro and micro nutrients supporting daily wellness</p>
+            </div>
+            <div class="infrastructure-grid">
+                <div class="infra-card">
+                    <h3>Macronutrients</h3>
+                    <ul>
+                        <li>Proteins: Pulses, nuts, seeds — growth & repair</li>
+                        <li>Carbohydrates: Grains & millets — sustained energy</li>
+                        <li>Dietary Fiber: Millets, oats, legumes — digestion & gut health</li>
+                        <li>Healthy Fats: Nuts & seeds — omega-3/6 for heart & brain</li>
+                    </ul>
+                </div>
+                <div class="infra-card">
+                    <h3>Vitamins</h3>
+                    <ul>
+                        <li>Vitamin A (Beta-carotene) — eye health</li>
+                        <li>B-complex (B1, B2, B3, B6, Folate) — energy & nerve health</li>
+                        <li>Vitamin C — immunity support</li>
+                        <li>Vitamin E — antioxidant for skin & cells</li>
+                        <li>Vitamin K — bones & blood regulation</li>
+                        <li>Vitamin D (trace) — bone support</li>
+                    </ul>
+                </div>
+                <div class="infra-card">
+                    <h3>Minerals</h3>
+                    <ul>
+                        <li>Calcium: Ragi, sesame, almonds — bones & teeth</li>
+                        <li>Iron: Chana, ragi, moong, sesame, flax — blood & energy</li>
+                        <li>Magnesium: Nuts, seeds, grains — muscle & nerve support</li>
+                        <li>Zinc: Seeds & legumes — immunity & metabolism</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </section>
@@ -75,18 +207,42 @@
                 <p>Discover our range of healthy, convenient, and nutrient-rich products</p>
             </div>
             
+            <div class="product-common-claims">
+                <h4>Clean-Label Assurances (Common Across All Amrot Products)</h4>
+                <ul class="product-features">
+                    <li><i class="fas fa-check"></i> No added oils</li>
+                    <li><i class="fas fa-check"></i> No Maida</li>
+                    <li><i class="fas fa-check"></i> No Eggs</li>
+                    <li><i class="fas fa-check"></i> No Refined Sugar</li>
+                    <li><i class="fas fa-check"></i> No Preservatives</li>
+                </ul>
+            </div>
+
             <div class="products-grid">
                 <!-- Health Drink Mix -->
                 <div class="product-card">
                     <div class="product-image">
-                        <img src="images/amrot-classic.png" alt="Health Drink Mix" class="product-img">
+                        <img src="images/amrot-classic.png" alt="Health Drink Mix" class="product-img" loading="lazy">
                     </div>
-                    <h3>AMROT Health Drink Mix</h3>
+                    <h3>Amrot Health Drink Mix</h3>
                     <p class="product-subtitle">Multigrains, Nuts & Pulses Based</p>
-                    <p class="product-description">
-                        Premium nutrient-rich beverage mix made with wisely chosen multigrains, nuts, and pulses. 
-                        Roasted to enhance flavors, blended with natural ingredients for optimal nutrition. <mcreference link="https://www.amazon.com/Multigrains-Health-Nutrition-Drink-16-91/dp/B07G1M58WJ" index="1">1</mcreference>
-                    </p>
+                        <p class="product-description">
+                            Premium nutrient-rich beverage mix made with wisely chosen multigrains, nuts, and pulses. 
+                            Roasted to enhance flavors, blended with natural ingredients for optimal nutrition. <mcreference link="https://www.amazon.com/Multigrains-Health-Nutrition-Drink-16-91/dp/B07G1M58WJ" index="1">1</mcreference>
+                        </p>
+                        <p class="product-description">
+                            Amrot is our product line of clean, nutrient-rich foods spanning Microgreens, Protein Powders,
+                            Mushrooms, and a daily Health Drink Mix — all crafted to support balanced macros and essential
+                            micronutrients for the whole family.
+                        </p>
+                        <h4 class="product-claims-title">Clean-Label Assurances</h4>
+                        <ul class="product-features">
+                            <li><i class="fas fa-check"></i> No added oils</li>
+                            <li><i class="fas fa-check"></i> No Maida</li>
+                            <li><i class="fas fa-check"></i> No Eggs</li>
+                            <li><i class="fas fa-check"></i> No Refined Sugar</li>
+                            <li><i class="fas fa-check"></i> No Preservatives</li>
+                        </ul>
                     <ul class="product-features">
                         <li><i class="fas fa-check"></i> 14 Natural ingredients including cereals, pulses & nuts</li>
                         <li><i class="fas fa-check"></i> 100% Natural - No artificial colors or preservatives</li>
@@ -111,9 +267,9 @@
                 <!-- Dried Vegetables & Fruits Powder -->
                 <div class="product-card">
                     <div class="product-image">
-                        <img src="images/driedvegandfruitPowders.png" alt="Dried Vegetables & Fruits Powder" class="product-img">
+                        <img src="images/driedvegandfruitPowders.png" alt="Amrot Protein Powders" class="product-img" loading="lazy">
                     </div>
-                    <h3>Vegetable & Fruit Powders</h3>
+                    <h3>Amrot Protein Powders</h3>
                     <p class="product-subtitle">Dried & Concentrated Nutrition</p>
                     <p class="product-description">
                         Convenient, shelf-stable nutrition powders made from premium dried vegetables and fruits. 
@@ -127,31 +283,13 @@
                     </ul>
                 </div>
 
-                <!-- Ready-to-Boil Curry Mix -->
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="images/currymix.png" alt="Ready-to-Boil Curry Mix" class="product-img">
-                    </div>
-                    <h3>Ready-to-Boil Curry Mix</h3>
-                    <p class="product-subtitle">Dehydrated Vegetable Meals</p>
-                    <p class="product-description">
-                        Quick and healthy meal solutions using premium dehydrated vegetables. 
-                        Just add water and boil for a nutritious, home-style curry.
-                    </p>
-                    <ul class="product-features">
-                        <li><i class="fas fa-check"></i> 5-minute preparation</li>
-                        <li><i class="fas fa-check"></i> Authentic flavors</li>
-                        <li><i class="fas fa-check"></i> No artificial additives</li>
-                        <li><i class="fas fa-check"></i> Travel-friendly</li>
-                    </ul>
-                </div>
 
                 <!-- Microgreens -->
                 <div class="product-card">
                     <div class="product-image">
-                        <img src="images/microgreens.png" alt="Fresh Microgreens" class="product-img">
+                        <img src="images/microgreens.png" alt="Fresh Microgreens" class="product-img" loading="lazy">
                     </div>
-                    <h3>Fresh Microgreens</h3>
+                    <h3>Amrot Microgreens</h3>
                     <p class="product-subtitle">Nutrient-Dense Greens</p>
                     <p class="product-description">
                         Fresh, nutrient-rich microgreens grown with care. Perfect for salads, garnishing, 
@@ -163,6 +301,99 @@
                         <li><i class="fas fa-check"></i> Pesticide-free</li>
                         <li><i class="fas fa-check"></i> Multiple varieties</li>
                     </ul>
+                </div>
+
+                <!-- Amrot Mushrooms -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="images/mushrooms.png" alt="Fresh Mushrooms" class="product-img" loading="lazy">
+                    </div>
+                    <h3>Amrot Mushrooms</h3>
+                    <p class="product-subtitle">Cultivated Fresh Mushrooms</p>
+                    <p class="product-description">
+                        Sustainable, clean-grown mushrooms produced in controlled environments. Ideal for daily cooking,
+                        rich in protein, fiber, and essential micronutrients.
+                    </p>
+                    <ul class="product-features">
+                        <li><i class="fas fa-check"></i> Oyster & button varieties</li>
+                        <li><i class="fas fa-check"></i> Climate-controlled cultivation</li>
+                        <li><i class="fas fa-check"></i> Clean and pesticide-free</li>
+                        <li><i class="fas fa-check"></i> Year-round supply</li>
+                    </ul>
+                </div>
+
+                <!-- Amrot Instant Curry Mixes -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="images/currymix.png" alt="Amrot Instant Curry Mixes" class="product-img" loading="lazy">
+                    </div>
+                    <h3>Amrot Instant Curry Mixes</h3>
+                    <p class="product-subtitle">Dehydrated Vegetable Meals</p>
+                    <p class="product-description">
+                        Quick and healthy meal solutions using premium dehydrated vegetables.
+                        Just add water and boil for a nutritious, home-style curry.
+                    </p>
+                    <ul class="product-features">
+                        <li><i class="fas fa-check"></i> 5-minute preparation</li>
+                        <li><i class="fas fa-check"></i> Authentic flavors</li>
+                        <li><i class="fas fa-check"></i> No artificial additives</li>
+                        <li><i class="fas fa-check"></i> Travel-friendly</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="faq" class="faq">
+        <div class="container">
+            <div class="section-header">
+                <h2>Frequently Asked Questions</h2>
+                <p>Answers to common questions about Amrot and our products</p>
+            </div>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <details>
+                        <summary>What is Amrot?</summary>
+                        <p>Amrot is our product family of clean, nutrient-dense foods that includes Microgreens,
+                           Protein Powders, Mushrooms, and a Health Drink Mix — each crafted to support balanced
+                           daily nutrition with essential macros and micronutrients.</p>
+                    </details>
+                </div>
+                <div class="faq-item">
+                    <details>
+                        <summary>How do I consume Amrot?</summary>
+                        <p>Use Amrot items as follows: Microgreens as fresh toppers and in salads, Protein Powders in
+                           shakes or porridges, Mushrooms in everyday cooking, and the Health Drink Mix stirred into
+                           warm milk or water.</p>
+                    </details>
+                </div>
+                <div class="faq-item">
+                    <details>
+                        <summary>Is Amrot suitable for children and seniors?</summary>
+                        <p>Yes. Amrot products are designed as family-friendly daily nutrition. For toddlers or specific
+                           dietary needs, consult a healthcare professional for personalized guidance.</p>
+                    </details>
+                </div>
+                <div class="faq-item">
+                    <details>
+                        <summary>Does Amrot contain eggs, maida, or refined sugar?</summary>
+                        <p>No. Amrot products contain no eggs, no maida, and no refined sugar. They are crafted without
+                           added oils or preservatives.</p>
+                    </details>
+                </div>
+                <div class="faq-item">
+                    <details>
+                        <summary>Can Amrot replace milk?</summary>
+                        <p>Amrot offers clean daily nutrition compared to adulterated milk. The Health Drink Mix can be
+                           consumed with milk or water; other Amrot items complement a balanced diet.</p>
+                    </details>
+                </div>
+                <div class="faq-item">
+                    <details>
+                        <summary>Is Amrot vegan?</summary>
+                        <p>Amrot items are plant-based. Prepared with plant-based milk or water, the Health Drink Mix
+                           fits a vegan-friendly routine.</p>
+                    </details>
                 </div>
             </div>
         </div>
@@ -193,7 +424,7 @@
                 
                 <div class="about-stats">
                     <div class="stat-card">
-                        <div class="stat-number">4</div>
+                        <div class="stat-number">5</div>
                         <div class="stat-label">Product Categories</div>
                     </div>
                     <div class="stat-card">
@@ -223,7 +454,7 @@
                         <i class="fas fa-map-marker-alt"></i>
                     </div>
                     <h3>Strategic Location</h3>
-                    <p>Located in Takkellapadu Village, Nandigama Mandal, NTR District, Andhra Pradesh with excellent connectivity and access to raw materials.</p>
+                    <p>Located in Takkellapadu Village, Nandigama Mandal, Amaravathi District, Andhra Pradesh with excellent connectivity and access to raw materials.</p>
                     <div class="infra-details">
                         <p><strong>Coordinates:</strong> 16.790191846567048° N, 80.2311484920132° E</p>
                     </div>
@@ -335,7 +566,7 @@
                             <i class="fas fa-map-marker-alt"></i>
                         </div>
                         <h3>Location</h3>
-                        <p>Takkellapadu Village, Nandigama Mandal, NTR District, Andhra Pradesh, India</p>
+                        <p>Takkellapadu Village, Nandigama Mandal, Amaravathi District, Andhra Pradesh, India</p>
                     </div>
                 </div>
                 
@@ -365,8 +596,8 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <img src="images/amrot_logo_white.png" alt="Ikshwaaks Nutrition Logo" class="footer-logo">
-                    <h3>Ikshwaaks Nutrition</h3>
+                    <img src="images/svg/amrot_logo_white.svg" alt="Amrot Logo" class="footer-logo" loading="lazy">
+                    <h3>Srivallabha Sustainable Solutions, A Healthy Living Solutions</h3>
                     <p>Promoting wellness and sustainability through innovative nutrition solutions.</p>
                     <div class="social-links">
                         <a href="#"><i class="fab fa-facebook"></i></a>
@@ -389,16 +620,17 @@
                 <div class="footer-section">
                     <h4>Products</h4>
                     <ul>
-                        <li><a href="#products">AMROT Health Drink Mix</a></li>
-                        <li><a href="#products">Vegetable Powders</a></li>
-                        <li><a href="#products">Curry Mix</a></li>
-                        <li><a href="#products">Microgreens</a></li>
+                        <li><a href="#products">Amrot Health Drink Mix</a></li>
+                        <li><a href="#products">Amrot Protein Powders</a></li>
+                        <li><a href="#products">Amrot Microgreens</a></li>
+                        <li><a href="#products">Amrot Mushrooms</a></li>
+                        <li><a href="#products">Amrot Instant Curry Mixes</a></li>
                     </ul>
                 </div>
                 
                 <div class="footer-section">
                     <h4>Contact Info</h4>
-                    <p><i class="fas fa-map-marker-alt"></i> Takkellapadu Village, NTR District, AP</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Takkellapadu Village, Amaravathi District, AP</p>
                     <p><i class="fas fa-envelope"></i> info@ikshwaaksnutrition.life</p>
                     <p><i class="fas fa-phone"></i> +91 7702741798</p>
                 </div>

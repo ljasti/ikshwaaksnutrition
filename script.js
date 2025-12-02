@@ -165,13 +165,16 @@ function createScrollToTopButton() {
     const scrollBtn = document.createElement('button');
     scrollBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
     scrollBtn.className = 'scroll-to-top';
+    const rootStyles = getComputedStyle(document.documentElement);
+    const primary = rootStyles.getPropertyValue('--primary-color').trim();
+    const primaryDark = rootStyles.getPropertyValue('--primary-dark').trim();
     scrollBtn.style.cssText = `
         position: fixed;
         bottom: 30px;
         right: 30px;
         width: 50px;
         height: 50px;
-        background: #6b8e23;
+        background: ${primary};
         color: white;
         border: none;
         border-radius: 50%;
@@ -207,12 +210,12 @@ function createScrollToTopButton() {
     
     // Hover effects
     scrollBtn.addEventListener('mouseenter', () => {
-        scrollBtn.style.background = '#5a7a1e';
+        scrollBtn.style.background = primaryDark;
         scrollBtn.style.transform = 'scale(1.1)';
     });
     
     scrollBtn.addEventListener('mouseleave', () => {
-        scrollBtn.style.background = '#6b8e23';
+        scrollBtn.style.background = primary;
         scrollBtn.style.transform = 'scale(1)';
     });
 }
