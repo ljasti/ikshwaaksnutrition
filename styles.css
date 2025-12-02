@@ -45,25 +45,25 @@ body {
 
 .header-brand {
     text-align: center;
-    padding: 6px 20px 0;
+    padding: 2px 16px 0;
 }
 
 .header-brand h2 {
     margin: 0;
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     font-weight: 700;
     color: var(--primary-dark);
 }
 
 .header-brand .tagline {
     display: block;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     color: var(--text-light);
     font-weight: 500;
 }
 
 .navbar {
-    padding: 1rem 0;
+    padding: 0.5rem 0;
 }
 
 .nav-container {
@@ -152,7 +152,7 @@ body {
 /* Hero Section */
 .hero {
     background: linear-gradient(135deg, var(--bg-light) 0%, var(--bg-light-2) 100%);
-    padding: 120px 0 80px;
+    padding: 100px 0 80px;
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -943,7 +943,7 @@ html {
 }
 
 .logo-img {
-    height: clamp(36px, 5vw, 50px);
+    height: clamp(32px, 4.5vw, 46px);
     width: auto;
     object-fit: contain;
 }
@@ -977,6 +977,14 @@ html {
     max-height: 400px;
     object-fit: contain;
     border-radius: 12px;
+}
+
+.hero-video {
+    width: 100%;
+    height: auto;
+    max-height: 420px;
+    border-radius: 12px;
+    display: block;
 }
 
 /* Product Variants */
@@ -1027,7 +1035,7 @@ html {
 /* Responsive adjustments for logos */
 @media (max-width: 768px) {
     .logo-img {
-        height: 40px;
+        height: 36px;
     }
     
     .logo-text h2 {
@@ -1046,6 +1054,15 @@ html {
     .footer-logo {
         height: 35px;
     }
+}
+
+.logo-link {
+    display: inline-flex;
+    align-items: center;
+}
+
+html {
+    scroll-behavior: smooth;
 }
 
 /* ... existing code ... */
