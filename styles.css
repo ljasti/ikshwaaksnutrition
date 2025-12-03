@@ -48,6 +48,64 @@ body {
     padding: 2px 16px 0;
 }
 
+.header-seal {
+    position: absolute;
+    top: 8px;
+    right: 16px;
+    transform: rotate(-12deg);
+    z-index: 1001;
+    pointer-events: none;
+}
+
+.header-seal img {
+    height: clamp(72px, 10vw, 140px);
+    width: auto;
+    opacity: 0.95;
+    filter: drop-shadow(0 6px 18px rgba(0,0,0,0.25));
+}
+
+@media (max-width: 768px) {
+    .header-seal {
+        top: 6px;
+        right: 10px;
+        transform: rotate(-10deg);
+    }
+    .header-seal img {
+        height: clamp(60px, 14vw, 110px);
+    }
+}
+
+/* Footer Seal */
+.footer .container {
+    position: relative;
+}
+
+.footer-seal {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    transform: rotate(-8deg);
+    pointer-events: none;
+}
+
+.footer-seal img {
+    height: clamp(64px, 10vw, 140px);
+    width: auto;
+    opacity: 0.9;
+    filter: drop-shadow(0 6px 18px rgba(0,0,0,0.25));
+}
+
+@media (max-width: 768px) {
+    .footer-seal {
+        bottom: 12px;
+        right: 12px;
+        transform: rotate(-6deg);
+    }
+    .footer-seal img {
+        height: clamp(56px, 16vw, 120px);
+    }
+}
+
 .header-brand h2 {
     margin: 0;
     font-size: 1.35rem;
@@ -452,6 +510,29 @@ body {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+}
+
+.about-seal {
+    grid-column: 2 / 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.about-seal figure {
+    text-align: center;
+}
+
+.about-seal img {
+    height: clamp(140px, 22vw, 240px);
+    width: auto;
+    filter: drop-shadow(0 6px 18px rgba(0,0,0,0.2));
+}
+
+.about-seal figcaption {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: #555;
 }
 
 .stat-card {
