@@ -340,7 +340,7 @@ body {
 /* Section Headers */
 .section-header {
     text-align: center;
-    margin-bottom: 4rem;
+    margin-bottom: 2.75rem;
 }
 
 .section-header h2 {
@@ -359,7 +359,7 @@ body {
 
 /* Products Section */
 .products {
-    padding: 80px 0;
+    padding: 64px 0;
     background: #fff;
 }
 
@@ -458,7 +458,7 @@ body {
 
 /* About Section */
 .about {
-    padding: 80px 0;
+    padding: 64px 0;
     background: linear-gradient(135deg, #fff7f0 0%, #fff1e6 100%);
 }
 
@@ -557,7 +557,7 @@ body {
 
 /* Infrastructure Section */
 .infrastructure {
-    padding: 80px 0;
+    padding: 64px 0;
     background: #fff;
 }
 
@@ -629,7 +629,7 @@ body {
 
 /* Funding Section */
 .funding {
-    padding: 80px 0;
+    padding: 64px 0;
     background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-color) 100%);
     color: white;
 }
@@ -687,12 +687,12 @@ body {
 
 /* Contact Section */
 .contact {
-    padding: 80px 0;
+    padding: 64px 0;
     background: #f8f9fa;
 }
 
 .faq {
-    padding: 80px 0;
+    padding: 64px 0;
     background: #fff;
 }
 
