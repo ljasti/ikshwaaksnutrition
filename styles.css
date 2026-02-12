@@ -456,6 +456,26 @@ body {
     font-size: 0.9rem;
 }
 
+.product-subitem {
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background: #f9f9f9;
+    border-radius: 12px;
+    border-left: 4px solid var(--primary-color);
+}
+
+.product-subitem h4 {
+    font-size: 1rem;
+    color: var(--primary-dark);
+    margin-bottom: 0.5rem;
+}
+
+.ingredients-list {
+    font-size: 0.9rem;
+    color: #666;
+    line-height: 1.5;
+}
+
 /* About Section */
 .about {
     padding: 64px 0;
