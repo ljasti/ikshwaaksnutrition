@@ -169,28 +169,88 @@ body {
     background: rgba(252, 144, 77, 0.05);
 }
 
-/* Header Seal */
-.header-seal {
+/* Header Seals */
+.header-seal-left,
+.header-seal-right {
     position: absolute;
     top: 15px;
-    right: 25px;
     z-index: 1001;
+    display: flex;
+    gap: 1.25rem;
+    align-items: center;
 }
 
-.header-seal img {
-    height: 90px;
+.header-seal-left {
+    left: 25px;
+}
+
+.header-seal-right {
+    right: 25px;
+}
+
+.seal-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1;
+}
+
+.header-seal-left img,
+.header-seal-right img {
+    height: 45px; /* Base height for other logos */
     width: auto;
     filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15));
     transition: var(--transition-base);
 }
 
-.header-seal img:hover {
-    transform: rotate(-5deg) scale(1.05);
+.header-seal-right .company-seal {
+    height: 70px; /* Dominating size for company seal */
 }
 
-@media (max-width: 992px) {
-    .header-seal {
-        display: none;
+.header-seal-left .fssai-lic {
+    color: var(--text-muted);
+    font-size: 0.65rem;
+    font-weight: 800;
+    margin-top: 0;
+    letter-spacing: -0.2px;
+}
+
+.header-seal-left img:hover,
+.header-seal-right img:hover {
+    transform: scale(1.08);
+}
+
+@media (max-width: 1200px) {
+    .header-seal-left,
+    .header-seal-right {
+        position: static;
+        padding: 0.5rem 1rem;
+        justify-content: center;
+        background: var(--bg-white);
+        width: 100%;
+    }
+    
+    .header-seal-left {
+        border-bottom: 1px solid rgba(0,0,0,0.03);
+    }
+    
+    .header-seal-right {
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+    
+    .header-brand {
+        padding-top: 1rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .header-seal-left img,
+    .header-seal-right img {
+        height: 35px;
+    }
+    
+    .header-seal-right .company-seal {
+        height: 50px;
     }
 }
 
@@ -841,9 +901,71 @@ body {
     padding-left: 5px;
 }
 
-.footer-seal img {
-    height: 120px;
+.footer-seal-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2.5rem;
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-seal-left,
+.footer-seal-right {
+    display: flex;
+    gap: 2.5rem;
+    align-items: center;
+}
+
+.footer-seal-left .seal-item,
+.footer-seal-right .seal-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1;
+}
+
+.footer-seal-left img,
+.footer-seal-right img {
+    height: 60px; /* Base height for footer logos */
+    width: auto;
+    object-fit: contain;
     filter: brightness(0.9);
+    transition: var(--transition-base);
+}
+
+.footer-seal-right .company-seal {
+    height: 90px; /* Dominating size for company seal in footer */
+}
+
+.footer-seal-left img:hover,
+.footer-seal-right img:hover {
+    transform: scale(1.1);
+    filter: brightness(1);
+}
+
+.footer-seal-left .fssai-lic {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-top: 0;
+    letter-spacing: -0.2px;
+}
+
+@media (max-width: 768px) {
+    .footer-seal-wrapper {
+        justify-content: center;
+        flex-direction: column;
+        gap: 2rem;
+    }
+    
+    .footer-seal-left,
+    .footer-seal-right {
+        justify-content: center;
+        width: 100%;
+    }
 }
 
 @media (max-width: 768px) {
