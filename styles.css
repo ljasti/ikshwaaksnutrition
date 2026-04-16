@@ -230,10 +230,12 @@ body {
     .header-seal-left,
     .header-seal-right {
         position: static;
-        padding: 0.5rem 1rem;
+        padding: 0.75rem 1rem;
         justify-content: center;
         background: var(--bg-white);
         width: 100%;
+        flex-wrap: wrap;
+        gap: 2rem;
     }
     
     .header-seal-left {
@@ -244,19 +246,34 @@ body {
         border-bottom: 1px solid rgba(0,0,0,0.05);
     }
     
+    .header-seal-right img:not(.company-seal) {
+        transform: none; /* Reset vertical shift for centered mobile view */
+        height: 52px;
+    }
+
     .header-brand {
-        padding-top: 1rem;
+        padding: 1.5rem 0 1rem;
     }
 }
 
 @media (max-width: 600px) {
+    .header-seal-left,
+    .header-seal-right {
+        gap: 1.5rem;
+        padding: 1rem;
+    }
+
     .header-seal-left img,
     .header-seal-right img {
-        height: 35px;
+        height: 42px;
     }
     
     .header-seal-right .company-seal {
-        height: 50px;
+        height: 60px;
+    }
+    
+    .header-seal-left .fssai-lic {
+        font-size: 0.6rem;
     }
 }
 
@@ -964,13 +981,24 @@ body {
     .footer-seal-wrapper {
         justify-content: center;
         flex-direction: column;
-        gap: 2rem;
+        gap: 3rem;
+        padding: 2rem 1rem 0;
     }
     
     .footer-seal-left,
     .footer-seal-right {
         justify-content: center;
         width: 100%;
+        gap: 2rem;
+    }
+
+    .footer-seal-left img,
+    .footer-seal-right img {
+        height: 50px;
+    }
+
+    .footer-seal-right .company-seal {
+        height: 80px;
     }
 }
 
