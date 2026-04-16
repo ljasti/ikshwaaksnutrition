@@ -181,11 +181,17 @@ body {
 }
 
 .header-seal-left {
-    left: 25px;
+    left: 200px; /* Increased gap from the center title */
 }
 
 .header-seal-right {
-    right: 25px;
+    right: 200px; /* Increased gap from the center title */
+    gap: 3.5rem;
+}
+
+.header-seal-right img:not(.company-seal) {
+    height: 58px; /* Specifically increased MCA to match MSME visual weight */
+    transform: translateY(-15px); /* Fine-tuned alignment */
 }
 
 .seal-item {
@@ -197,14 +203,14 @@ body {
 
 .header-seal-left img,
 .header-seal-right img {
-    height: 45px; /* Base height for other logos */
+    height: 52px; /* Increased base height for better visibility */
     width: auto;
     filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15));
     transition: var(--transition-base);
 }
 
 .header-seal-right .company-seal {
-    height: 70px; /* Dominating size for company seal */
+    height: 90px; /* Increased dominating size for company seal */
 }
 
 .header-seal-left .fssai-lic {
@@ -908,7 +914,7 @@ body {
     flex-wrap: wrap;
     gap: 2.5rem;
     margin-top: 4rem;
-    padding-top: 2rem;
+    padding: 2rem 5rem 0; /* Added horizontal padding to move logos inward */
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -937,7 +943,7 @@ body {
 }
 
 .footer-seal-right .company-seal {
-    height: 90px; /* Dominating size for company seal in footer */
+    height: 110px; /* Increased dominating size for company seal in footer */
 }
 
 .footer-seal-left img:hover,
