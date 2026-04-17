@@ -181,17 +181,21 @@ body {
 }
 
 .header-seal-left {
-    left: 200px; /* Increased gap from the center title */
+    left: 60px; /* Reduced from 200px to adjust space at LHS */
 }
 
 .header-seal-right {
-    right: 200px; /* Increased gap from the center title */
+    right: 200px; /* Space for the stamp seal */
     gap: 3.5rem;
 }
 
+.header-seal-left img,
 .header-seal-right img:not(.company-seal) {
-    height: 58px; /* Specifically increased MCA to match MSME visual weight */
-    transform: translateY(-15px); /* Fine-tuned alignment */
+    height: 65px; /* Increased from 52px for better visibility */
+    transform: translateY(-5px); /* Adjusted alignment for larger size */
+    width: auto;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15));
+    transition: var(--transition-base);
 }
 
 .seal-item {
@@ -201,16 +205,32 @@ body {
     line-height: 1;
 }
 
-.header-seal-left img,
-.header-seal-right img {
-    height: 52px; /* Increased base height for better visibility */
+.header-seal-right .company-seal {
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    height: 180px; /* Large stamp size */
     width: auto;
-    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15));
+    opacity: 0.95;
+    transform: rotate(-15deg); /* More aggressive stamp angle */
+    z-index: 5000; /* Extremely high to ensure it overlaps everything */
+    pointer-events: none;
+    filter: drop-shadow(0 10px 25px rgba(0,0,0,0.2));
     transition: var(--transition-base);
 }
 
-.header-seal-right .company-seal {
-    height: 90px; /* Increased dominating size for company seal */
+.header-seal-right .company-seal:hover {
+    transform: rotate(-10deg) scale(1.05);
+    opacity: 1;
+}
+
+@media (max-width: 1200px) {
+    .header-seal-right .company-seal {
+        height: 120px !important;
+        top: 20px;
+        right: 20px;
+        opacity: 0.8;
+    }
 }
 
 .header-seal-left .fssai-lic {
@@ -289,15 +309,15 @@ body {
 
     /* Keep Company Seal visible and separate */
     .header-seal-right .company-seal {
-        position: fixed; /* Keep it prominent */
-        top: 15px;
+        position: absolute;
+        top: 20px;
         right: 15px;
-        height: 60px !important;
-        opacity: 1;
-        filter: none;
-        z-index: 10;
-        pointer-events: auto;
-        display: none; /* Hide in this bg flow, handle separately if needed */
+        height: 120px !important;
+        opacity: 0.9;
+        transform: rotate(-10deg);
+        z-index: 2000;
+        pointer-events: none;
+        display: block;
     }
 
     /* Redefining Company Seal for Mobile to be prominent but not in BG */
@@ -1432,12 +1452,13 @@ body {
 }
 
 .footer-seal-right .company-seal {
-    height: 90px; /* Reduced from 110px */
+    height: 90px;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.05));
 }
 
 .footer-seal-left img:hover,
 .footer-seal-right img:hover {
-    transform: scale(1.05); /* Reduced from 1.1 */
+    transform: scale(1.05);
 }
 
 .footer-seal-left .fssai-lic {
@@ -1493,14 +1514,12 @@ body {
         width: 100%;
         gap: 1.5rem; /* Reduced from 2rem */
     }
+}
 
+@media (max-width: 768px) {
     .footer-seal-left img,
     .footer-seal-right img {
         height: 40px; /* Reduced from 50px */
-    }
-
-    .footer-seal-right .company-seal {
-        height: 70px; /* Reduced from 80px */
     }
 }
 
