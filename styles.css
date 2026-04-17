@@ -888,8 +888,8 @@ body {
 /* Sticky WhatsApp Modernized */
 .whatsapp-sticky {
     position: fixed;
-    right: 40px; /* Moved to right for standard UX */
-    left: auto;
+    left: 40px; /* Moved back to left to avoid overlap with scroll-to-top */
+    right: auto;
     bottom: 40px;
     display: flex;
     align-items: center;
@@ -1254,103 +1254,105 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    flex-wrap: wrap;
-    gap: 3rem; /* Increased for better airiness */
+    flex-wrap: nowrap; /* Prevent wrapping on desktop to keep in single line */
+    gap: 2rem; /* Reduced gap to fit all 4 sections horizontally */
 }
 
 .footer-section {
     flex: 1;
-    min-width: 220px;
-}
-
-/* Brand section - Left aligned */
-.footer-section:first-child {
-    flex: 1.5;
-    min-width: 280px;
-}
-
-/* Navigation sections - Center aligned */
-.footer-section:nth-child(2),
-.footer-section:nth-child(3) {
-    text-align: center;
-}
-
-.footer-section:nth-child(2) ul,
-.footer-section:nth-child(3) ul {
-    display: inline-block;
+    min-width: 0; /* Allow sections to shrink as needed */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     text-align: left;
+}
+
+/* Brand section - Takes slightly more space but remains on same line */
+.footer-section:first-child {
+    flex: 1.4;
+    min-width: 260px;
+}
+
+.footer-section:nth-child(2),
+.footer-section:nth-child(3),
+.footer-section:last-child {
+    flex: 1;
+    min-width: 180px; /* Reduced min-width to prevent wrapping */
+}
+
+.footer-section ul {
     list-style: none;
     padding: 0;
-}
-
-/* Contact section - Right aligned */
-.footer-section:last-child {
-    text-align: right;
-}
-
-.footer-section:last-child p {
     display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.footer-section:last-child i {
-    order: 2; /* Move icon to after text for right alignment feel */
-    margin-right: 0;
-    margin-left: 0.5rem;
-}
-
-.footer-section h3 {
-    font-size: 1.1rem;
-    margin-bottom: 0.75rem;
-    color: var(--primary-dark);
-}
-
-.footer-section p {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    margin-bottom: 0.5rem;
-}
-
-.footer-logo {
-    height: 50px; /* Reduced from 60px */
-    margin-bottom: 1.5rem; /* Reduced from 2rem */
+    flex-direction: column;
+    gap: 0.75rem;
 }
 
 .footer-section h4 {
     color: var(--primary-dark);
-    font-size: 1.2rem;
-    margin-bottom: 1.75rem;
-    font-weight: 700;
+    font-size: 1.25rem;
+    margin-bottom: 2.5rem;
+    font-weight: 800;
     position: relative;
-    display: inline-block;
+    display: block;
+    width: fit-content;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
 }
 
 .footer-section h4::after {
     content: '';
     position: absolute;
     bottom: -8px;
-    left: 0;
+    left: 0; /* All underlines aligned left */
     width: 30px;
-    height: 2px;
+    height: 3px;
     background: var(--primary);
     border-radius: 2px;
 }
 
+/* Remove center/right specific overrides */
 .footer-section:nth-child(2) h4::after,
-.footer-section:nth-child(3) h4::after {
-    left: 50%;
-    transform: translateX(-50%);
-}
-
+.footer-section:nth-child(3) h4::after,
 .footer-section:last-child h4::after {
-    left: auto;
-    right: 0;
+    left: 0;
+    transform: none;
 }
 
-.footer-section ul li {
+.footer-section p {
+    font-size: 0.95rem;
+    color: var(--text-muted);
     margin-bottom: 0.75rem;
+    line-height: 1.6;
+}
+
+/* Contact info alignment - standard left with icons */
+.footer-section:last-child p {
+    display: flex;
+    flex-direction: row; /* Standard icon then text */
+    align-items: flex-start;
+    gap: 0.75rem;
+}
+
+.footer-section:last-child p i {
+    color: var(--primary);
+    width: 20px;
+    text-align: center;
+    margin-top: 0.25rem;
+}
+
+.footer-logo {
+    height: 55px;
+    margin-bottom: 1.5rem;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.05));
+}
+
+.footer-section h3 {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin-bottom: 1rem;
+    line-height: 1.4;
 }
 
 .footer-section ul li a {
@@ -1455,28 +1457,27 @@ body {
     font-size: 0.85rem; /* Reduced from 0.9rem */
 }
 
+@media (max-width: 992px) {
+    .footer-content {
+        flex-wrap: wrap;
+        gap: 3rem 2rem;
+    }
+    
+    .footer-section {
+        min-width: 250px;
+    }
+}
+
 @media (max-width: 768px) {
     .footer-content {
-        gap: 2rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2.5rem;
     }
 
     .footer-section {
-        text-align: left !important;
-    }
-
-    .footer-section:nth-child(2) ul,
-    .footer-section:nth-child(3) ul {
-        display: block;
-    }
-
-    .footer-section:last-child p {
-        justify-content: flex-start;
-    }
-
-    .footer-section:last-child i {
-        order: 0;
-        margin-left: 0;
-        margin-right: 0.5rem;
+        width: 100%;
+        min-width: 0;
     }
 
     .footer-seal-wrapper {

@@ -152,8 +152,10 @@ function createScrollToTopButton() {
     const scrollBtn = document.createElement('button');
     scrollBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
     scrollBtn.className = 'scroll-to-top';
-    const primary = '#fc904d';
-    const primaryDark = '#b85e24';
+    
+    // Use the CSS variables defined in :root
+    const primary = 'linear-gradient(135deg, #f37d35 0%, #cc5e1b 100%)';
+    
     scrollBtn.style.cssText = `
         position: fixed;
         bottom: 30px;
@@ -166,11 +168,14 @@ function createScrollToTopButton() {
         border-radius: 50%;
         cursor: pointer;
         font-size: 1.2rem;
-        box-shadow: 0 8px 25px rgba(252, 144, 77, 0.3);
+        box-shadow: 0 10px 30px rgba(243, 125, 53, 0.3);
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         opacity: 0;
         visibility: hidden;
         z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     `;
     
     document.body.appendChild(scrollBtn);
@@ -180,9 +185,11 @@ function createScrollToTopButton() {
         if (window.scrollY > 300) {
             scrollBtn.style.opacity = '1';
             scrollBtn.style.visibility = 'visible';
+            scrollBtn.style.transform = 'translateY(0)';
         } else {
             scrollBtn.style.opacity = '0';
             scrollBtn.style.visibility = 'hidden';
+            scrollBtn.style.transform = 'translateY(20px)';
         }
     });
     
@@ -196,13 +203,13 @@ function createScrollToTopButton() {
     
     // Hover effects
     scrollBtn.addEventListener('mouseenter', () => {
-        scrollBtn.style.background = primaryDark;
-        scrollBtn.style.transform = 'scale(1.1)';
+        scrollBtn.style.transform = 'translateY(-5px) scale(1.1)';
+        scrollBtn.style.boxShadow = '0 15px 35px rgba(243, 125, 53, 0.4)';
     });
     
     scrollBtn.addEventListener('mouseleave', () => {
-        scrollBtn.style.background = primary;
-        scrollBtn.style.transform = 'scale(1)';
+        scrollBtn.style.transform = 'translateY(0) scale(1)';
+        scrollBtn.style.boxShadow = '0 10px 30px rgba(243, 125, 53, 0.3)';
     });
 }
 
