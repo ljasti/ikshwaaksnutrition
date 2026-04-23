@@ -1361,6 +1361,18 @@ body {
     margin-top: 0.25rem;
 }
 
+.footer-section p a,
+.contact-link {
+    color: inherit;
+    text-decoration: none;
+    transition: var(--transition-fast);
+}
+
+.footer-section p a:hover,
+.contact-link:hover {
+    color: var(--primary);
+}
+
 .footer-logo {
     height: 55px;
     margin-bottom: 1.5rem;
@@ -1476,6 +1488,25 @@ body {
     text-align: center;
     color: var(--text-muted);
     font-size: 0.85rem; /* Reduced from 0.9rem */
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.footer-legal-links {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.footer-legal-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: var(--transition-fast);
+}
+
+.footer-legal-links a:hover {
+    color: var(--primary);
 }
 
 @media (max-width: 992px) {

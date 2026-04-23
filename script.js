@@ -292,6 +292,55 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     });
+
+    // 3. Contact Form Submission Tracking
+    const contactForm = document.querySelector('.contact-form form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', function() {
+            gtag('event', 'form_submission', {
+                'event_category': 'Engagement',
+                'event_label': 'Contact Form',
+                'transport_type': 'beacon'
+            });
+        });
+    }
+
+    // 4. Click-to-Call and Click-to-Email Tracking
+    const contactLinks = document.querySelectorAll('a[href^="tel:"], a[href^="mailto:"]');
+    contactLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            const type = this.href.startsWith('tel:') ? 'Phone' : 'Email';
+            gtag('event', 'contact_lead_click', {
+                'event_category': 'Leads',
+                'event_label': type,
+                'value': this.href,
+                'transport_type': 'beacon'
+            });
+        });
+    });
+
+    // 5. Scroll Depth Tracking (Optional Sophistication)
+    let scrollDepths = [25, 50, 75, 100];
+    let trackedDepths = new Set();
+
+    window.addEventListener('scroll', () => {
+        const h = document.documentElement, 
+              b = document.body,
+              st = 'scrollTop',
+              sh = 'scrollHeight';
+        const percent = (h[st]||b[st]) / ((h[sh]||b[sh]) - h.clientHeight) * 100;
+
+        scrollDepths.forEach(depth => {
+            if (percent >= depth && !trackedDepths.has(depth)) {
+                trackedDepths.add(depth);
+                gtag('event', 'scroll_depth', {
+                    'event_category': 'Engagement',
+                    'event_label': depth + '%',
+                    'non_interaction': true
+                });
+            }
+        });
+    }, { passive: true });
 });
 
 // Counter animation for stats
