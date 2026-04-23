@@ -262,6 +262,36 @@ document.addEventListener('DOMContentLoaded', () => {
             typeWriter(heroTitle, originalText, 50);
         }, 500);
     }
+
+    // LEVEL 2: Business Tracking (Button Click Tracking)
+    // 1. WhatsApp Button Tracking
+    const whatsappBtn = document.querySelector('.whatsapp-sticky');
+    if (whatsappBtn) {
+        whatsappBtn.addEventListener('click', () => {
+            gtag('event', 'whatsapp_click', {
+                'event_category': 'Engagement',
+                'event_label': 'Order Now on WhatsApp',
+                'transport_type': 'beacon'
+            });
+        });
+    }
+
+    // 2. Order/Buy Now Button Tracking (Targeting primary CTA buttons)
+    const orderButtons = document.querySelectorAll('.btn-primary, .hero-buttons .btn, [href*="wa.me"]');
+    orderButtons.forEach(btn => {
+        // Skip the sticky WhatsApp button as it's handled above
+        if (btn.classList.contains('whatsapp-sticky')) return;
+
+        btn.addEventListener('click', function() {
+            const buttonText = this.textContent.trim();
+            gtag('event', 'order_intent_click', {
+                'event_category': 'Conversion',
+                'event_label': buttonText,
+                'button_type': 'Primary CTA',
+                'transport_type': 'beacon'
+            });
+        });
+    });
 });
 
 // Counter animation for stats
