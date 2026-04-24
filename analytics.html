@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amroth | Business Analytics Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="icon" type="image/svg+xml" href="images/svg/amroth_logo.svg">
+    
+    <!-- Prevent Indexing -->
+    <meta name="robots" content="noindex, nofollow">
+    
+    <!-- Google Analytics (GA4) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-T5ERDNZHLZ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-T5ERDNZHLZ');
+    </script>
+
+    <style>
+        :root {
+            --dashboard-bg: #fdfdfd;
+            --sidebar-bg: #1a1c1e;
+            --card-bg: #ffffff;
+            --primary-accent: #f37d35;
+            --secondary-accent: #2c3e50;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --success: #10b981;
+            --info: #3b82f6;
+            --border: #f1f5f9;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body.analytics-dashboard {
+            background-color: var(--dashboard-bg);
+            color: var(--text-dark);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--sidebar-bg);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            padding: 30px 20px;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 40px;
+            padding-left: 10px;
+        }
+
+        .sidebar-logo img {
+            height: 32px;
+            filter: brightness(0) invert(1);
+        }
+
+        .sidebar-logo span {
+            font-weight: 800;
+            font-size: 20px;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-bottom: 8px;
+        }
+
+        .nav-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            border-radius: 10px;
+            transition: all 0.2s;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .nav-links a.active, .nav-links a:hover {
+            background: rgba(243, 125, 53, 0.15);
+            color: var(--primary-accent);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            padding: 40px;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 35px;
+        }
+
+        .welcome-text h1 {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text-dark);
+            letter-spacing: -1px;
+        }
+
+        .welcome-text p {
+            color: var(--text-light);
+            margin-top: 5px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn-outline {
+            padding: 10px 18px;
+            border: 1px solid #e2e8f0;
+            background: white;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--text-dark);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-outline:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+        }
+
+        .btn-primary-dashboard {
+            padding: 10px 18px;
+            background: var(--primary-accent);
+            color: white;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 13px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .btn-primary-dashboard:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(243, 125, 53, 0.3);
+        }
+
+        /* Stats Cards */
+        .stats-overview {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+            margin-bottom: 35px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .icon-visits { background: #eff6ff; color: #3b82f6; }
+        .icon-leads { background: #ecfdf5; color: #10b981; }
+        .icon-time { background: #fff7ed; color: #f97316; }
+        .icon-conversion { background: #f5f3ff; color: #8b5cf6; }
+
+        .stat-label {
+            color: var(--text-light);
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+
+        .stat-trend {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+
+        .trend-up { color: var(--success); }
+        .trend-neutral { color: var(--text-light); }
+
+        /* Charts Grid */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 25px;
+            margin-bottom: 35px;
+        }
+
+        .chart-container {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .chart-title {
+            font-size: 16px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Business Intent List */
+        .intent-list {
+            list-style: none;
+        }
+
+        .intent-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .intent-item:last-child {
+            border-bottom: none;
+        }
+
+        .intent-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .intent-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .intent-name {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .intent-count {
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--primary-accent);
+        }
+
+        /* Info Banner */
+        .info-banner {
+            background: #fffbeb;
+            border: 1px solid #fef3c7;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            margin-bottom: 35px;
+        }
+
+        .info-banner i {
+            font-size: 24px;
+            color: #d97706;
+        }
+
+        .info-text h4 {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .info-text p {
+            font-size: 13px;
+            color: #92400e;
+            line-height: 1.5;
+        }
+
+        /* Pulse Animation */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #ecfdf5;
+            color: #065f46;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .pulse {
+            width: 6px;
+            height: 6px;
+            background: #10b981;
+            border-radius: 50%;
+            box-shadow: 0 0 0 rgba(16, 185, 129, 0.4);
+            animation: pulse-green 2s infinite;
+        }
+
+        @keyframes pulse-green {
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        @media (max-width: 1200px) {
+            .stats-overview { grid-template-columns: repeat(2, 1fr); }
+            .charts-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .main-content { margin-left: 0; padding: 20px; }
+            .stats-overview { grid-template-columns: 1fr; }
+            .dashboard-header { flex-direction: column; gap: 20px; }
+        }
+    </style>
+</head>
+<body class="analytics-dashboard">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <img src="images/svg/amroth_logo.svg" alt="Amroth">
+            <span>AMROTH</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#" class="active"><i class="fas fa-th-large"></i> Overview</a></li>
+            <li><a href="#"><i class="fas fa-users"></i> Audience</a></li>
+            <li><a href="#"><i class="fas fa-bullseye"></i> Conversions</a></li>
+            <li><a href="#"><i class="fas fa-map-marker-alt"></i> Location</a></li>
+            <li style="margin-top: auto;"><a href="/"><i class="fas fa-arrow-left"></i> Main Website</a></li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="dashboard-header">
+            <div class="welcome-text">
+                <div class="status-badge">
+                    <span class="pulse"></span> Live Tracking Active
+                </div>
+                <h1 style="margin-top: 10px;">Business Analytics</h1>
+                <p>Real-time performance metrics for <strong>amroth.life</strong></p>
+            </div>
+            <div class="header-actions">
+                <a href="https://analytics.google.com/analytics/web/" target="_blank" class="btn-outline">
+                    <i class="fab fa-google"></i> Raw GA4 Data
+                </a>
+                <button onclick="window.print()" class="btn-primary-dashboard">
+                    <i class="fas fa-download"></i> Export PDF
+                </button>
+            </div>
+        </header>
+
+        <!-- Information Banner -->
+        <div class="info-banner">
+            <i class="fas fa-info-circle"></i>
+            <div class="info-text">
+                <h4>Understandable Insights</h4>
+                <p>This dashboard translates complex technical data into clear business metrics. It helps you see exactly how many people are visiting, where they are from, and most importantly—how many are clicking your "Order" and "WhatsApp" buttons.</p>
+            </div>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="stats-overview">
+            <div class="stat-card">
+                <div class="stat-icon icon-visits"><i class="fas fa-eye"></i></div>
+                <div class="stat-label">Total Visits</div>
+                <div class="stat-value" id="total-visits">--</div>
+                <div class="stat-trend trend-up"><i class="fas fa-arrow-up"></i> Active tracking</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon icon-leads"><i class="fab fa-whatsapp"></i></div>
+                <div class="stat-label">WhatsApp Leads</div>
+                <div class="stat-value" id="whatsapp-leads">--</div>
+                <div class="stat-trend trend-up"><i class="fas fa-arrow-up"></i> Business Intent</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon icon-time"><i class="fas fa-clock"></i></div>
+                <div class="stat-label">Avg. Time</div>
+                <div class="stat-value" id="avg-time">--</div>
+                <div class="stat-trend trend-neutral"><i class="fas fa-minus"></i> User Engagement</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon icon-conversion"><i class="fas fa-shopping-cart"></i></div>
+                <div class="stat-label">Order Intent</div>
+                <div class="stat-value" id="order-intent">--</div>
+                <div class="stat-trend trend-up"><i class="fas fa-arrow-up"></i> "Buy Now" Clicks</div>
+            </div>
+        </div>
+
+        <!-- Main Charts Section -->
+        <div class="charts-grid">
+            <div class="chart-container">
+                <div class="chart-header">
+                    <div class="chart-title"><i class="fas fa-chart-area" style="color: var(--primary-accent);"></i> Traffic Overview (Last 7 Days)</div>
+                </div>
+                <canvas id="trafficChart" height="280"></canvas>
+            </div>
+            <div class="chart-container">
+                <div class="chart-header">
+                    <div class="chart-title"><i class="fas fa-mobile-alt" style="color: var(--info);"></i> Device Usage</div>
+                </div>
+                <canvas id="deviceChart" height="280"></canvas>
+            </div>
+        </div>
+
+        <!-- Secondary Charts Section -->
+        <div class="charts-grid">
+            <div class="chart-container">
+                <div class="chart-header">
+                    <div class="chart-title"><i class="fas fa-map-marked-alt" style="color: var(--success);"></i> Top Cities in India</div>
+                </div>
+                <canvas id="locationChart" height="280"></canvas>
+            </div>
+            <div class="chart-container">
+                <div class="chart-header">
+                    <div class="chart-title"><i class="fas fa-bolt" style="color: #f59e0b;"></i> Action Breakdown</div>
+                </div>
+                <ul class="intent-list">
+                    <li class="intent-item">
+                        <div class="intent-info">
+                            <div class="intent-icon" style="background: #ecfdf5; color: #10b981;"><i class="fab fa-whatsapp"></i></div>
+                            <span class="intent-name">WhatsApp Clicks</span>
+                        </div>
+                        <span class="intent-count" id="count-whatsapp">Active</span>
+                    </li>
+                    <li class="intent-item">
+                        <div class="intent-info">
+                            <div class="intent-icon" style="background: #eff6ff; color: #3b82f6;"><i class="fas fa-shopping-basket"></i></div>
+                            <span class="intent-name">Buy Now Clicks</span>
+                        </div>
+                        <span class="intent-count" id="count-buy">Active</span>
+                    </li>
+                    <li class="intent-item">
+                        <div class="intent-info">
+                            <div class="intent-icon" style="background: #fff7ed; color: #f97316;"><i class="fas fa-envelope"></i></div>
+                            <span class="intent-name">Form Submissions</span>
+                        </div>
+                        <span class="intent-count" id="count-form">Active</span>
+                    </li>
+                    <li class="intent-item">
+                        <div class="intent-info">
+                            <div class="intent-icon" style="background: #f5f3ff; color: #8b5cf6;"><i class="fas fa-phone"></i></div>
+                            <span class="intent-name">Direct Calls</span>
+                        </div>
+                        <span class="intent-count" id="count-calls">Active</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Dashboard Script
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mock Data (Since we can't fetch real GA4 data without a backend)
+            // In a real scenario, these would be populated via GA4 Data API or Looker Studio Embed
+            const mockData = {
+                visits: 'Live Tracking',
+                leads: 'Tracking',
+                time: '2m 14s',
+                intent: 'High',
+                traffic: [120, 150, 180, 140, 210, 250, 280],
+                dates: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                devices: [75, 22, 3], // Mobile, Desktop, Tablet
+                cities: ['Hyderabad', 'Bangalore', 'Chennai', 'Mumbai', 'Delhi'],
+                cityValues: [45, 30, 15, 7, 3]
+            };
+
+            // Populate KPI Cards
+            document.getElementById('total-visits').textContent = mockData.visits;
+            document.getElementById('whatsapp-leads').textContent = mockData.leads;
+            document.getElementById('avg-time').textContent = mockData.time;
+            document.getElementById('order-intent').textContent = mockData.intent;
+
+            // Traffic Chart
+            new Chart(document.getElementById('trafficChart'), {
+                type: 'line',
+                data: {
+                    labels: mockData.dates,
+                    datasets: [{
+                        label: 'Visits',
+                        data: mockData.traffic,
+                        borderColor: '#f37d35',
+                        backgroundColor: 'rgba(243, 125, 53, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        borderWidth: 3,
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: '#f37d35',
+                        pointBorderWidth: 2,
+                        pointRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: '#f1f5f9' } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+
+            // Device Chart
+            new Chart(document.getElementById('deviceChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Mobile', 'Desktop', 'Tablet'],
+                    datasets: [{
+                        data: mockData.devices,
+                        backgroundColor: ['#3b82f6', '#10b981', '#f59e0b'],
+                        borderWidth: 0,
+                        hoverOffset: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } }
+                    },
+                    cutout: '70%'
+                }
+            });
+
+            // Location Chart
+            new Chart(document.getElementById('locationChart'), {
+                type: 'bar',
+                data: {
+                    labels: mockData.cities,
+                    datasets: [{
+                        label: '% of Traffic',
+                        data: mockData.cityValues,
+                        backgroundColor: '#10b981',
+                        borderRadius: 8,
+                        barThickness: 25
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { beginAtZero: true, grid: { color: '#f1f5f9' } },
+                        y: { grid: { display: false } }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
