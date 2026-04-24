@@ -254,6 +254,11 @@ function typeWriter(element, text, speed = 100) {
 
 // Initialize typing effect
 document.addEventListener('DOMContentLoaded', () => {
+    // PREVENT TRACKING DURING DEVELOPMENT/TESTING
+    const isDevelopment = window.location.hostname === 'localhost' || 
+                         window.location.hostname === '127.0.0.1' ||
+                         window.location.search.includes('debug=true');
+
     const heroTitle = document.querySelector('.hero-title');
     if (heroTitle) {
         const originalText = heroTitle.textContent;
@@ -264,11 +269,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // LEVEL 2: Business Tracking (Button Click Tracking)
+    // Wrap tracking in a helper to manage environment
+    function trackEvent(name, params) {
+        if (isDevelopment) {
+            console.log(`[Analytics Debug] Event: ${name}`, params);
+            return;
+        }
+        if (typeof gtag === 'function') {
+            gtag('event', name, params);
+        }
+    }
+
     // 1. WhatsApp Button Tracking
     const whatsappBtn = document.querySelector('.whatsapp-sticky');
     if (whatsappBtn) {
         whatsappBtn.addEventListener('click', () => {
-            gtag('event', 'whatsapp_click', {
+            trackEvent('whatsapp_click', {
                 'event_category': 'Engagement',
                 'event_label': 'Order Now on WhatsApp',
                 'transport_type': 'beacon'
@@ -284,7 +300,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         btn.addEventListener('click', function() {
             const buttonText = this.textContent.trim();
-            gtag('event', 'order_intent_click', {
+            trackEvent('order_intent_click', {
                 'event_category': 'Conversion',
                 'event_label': buttonText,
                 'button_type': 'Primary CTA',
@@ -297,7 +313,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const contactForm = document.querySelector('.contact-form form');
     if (contactForm) {
         contactForm.addEventListener('submit', function() {
-            gtag('event', 'form_submission', {
+            trackEvent('form_submission', {
                 'event_category': 'Engagement',
                 'event_label': 'Contact Form',
                 'transport_type': 'beacon'
@@ -310,7 +326,7 @@ document.addEventListener('DOMContentLoaded', () => {
     contactLinks.forEach(link => {
         link.addEventListener('click', function() {
             const type = this.href.startsWith('tel:') ? 'Phone' : 'Email';
-            gtag('event', 'contact_lead_click', {
+            trackEvent('contact_lead_click', {
                 'event_category': 'Leads',
                 'event_label': type,
                 'value': this.href,
@@ -319,7 +335,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 5. Scroll Depth Tracking (Optional Sophistication)
+    // 5. Scroll Depth Tracking
     let scrollDepths = [25, 50, 75, 100];
     let trackedDepths = new Set();
 
@@ -333,9 +349,10 @@ document.addEventListener('DOMContentLoaded', () => {
         scrollDepths.forEach(depth => {
             if (percent >= depth && !trackedDepths.has(depth)) {
                 trackedDepths.add(depth);
-                gtag('event', 'scroll_depth', {
+                trackEvent('scroll_depth', {
                     'event_category': 'Engagement',
-                    'event_label': depth + '%',
+                    'event_label': `Reached ${depth}%`,
+                    'value': depth,
                     'non_interaction': true
                 });
             }
