@@ -43,7 +43,7 @@ const observer = new IntersectionObserver((entries) => {
 // Observe elements for animation
 document.addEventListener('DOMContentLoaded', () => {
     const animatedElements = document.querySelectorAll(
-        '.product-card, .infra-card, .stat-card, .solution-card, .trust-card, .step, .section-header, .objective-card, .contact-card'
+        '.product-card, .infra-card, .nutrition-card, .stat-card, .solution-card, .trust-card, .step, .section-header, .objective-card, .contact-card, .value-item, .hero-content, .hero-logo-overlay'
     );
     
     animatedElements.forEach(el => {
@@ -82,6 +82,23 @@ if (contactForm) {
         this.reset();
     });
 }
+
+// Scroll to Top Button Logic
+const scrollTopBtn = document.getElementById('scrollTop');
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+        scrollTopBtn?.classList.add('show');
+    } else {
+        scrollTopBtn?.classList.remove('show');
+    }
+});
+
+scrollTopBtn?.addEventListener('click', () => {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+});
 
 // Email validation function
 function isValidEmail(email) {
@@ -398,7 +415,7 @@ const statsObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.5 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    const statsSection = document.querySelector('.about-stats');
+    const statsSection = document.querySelector('.story-stats');
     if (statsSection) {
         statsObserver.observe(statsSection);
     }
