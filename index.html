@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amroth | Complete Daily Nutrition Made Instant</title>
-    <meta name="description" content="Complete daily nutrition for modern living. Amroth offers instant multigrain health mixes, vegetable & fruit powders, and microgreens—all natural and ready in minutes.">
+    <title>Amroth – Instant Healthy Food & Nutrition Mixes | Multigrain, Veg & Fruit Powders</title>
+    <meta name="description" content="Buy instant healthy food products from Amroth. Multigrain energy mix, sambar mix, vegetable & fruit powders, and microgreens. Natural, no preservatives.">
     <meta name="theme-color" content="#f37d35">
     
     <!-- Open Graph / Facebook -->
@@ -12,14 +12,14 @@
     <meta property="og:url" content="https://amroth.life/">
     <meta property="og:title" content="Amroth | Complete Daily Nutrition Made Instant">
     <meta property="og:description" content="Instant multigrain health mixes, vegetable & fruit powders, and microgreens. Multigrains • Vegetables • Fruits • Microgreens—Complete nutrition in minutes.">
-    <meta property="og:image" content="https://amroth.life/images/allProducts.png">
+    <meta property="og:image" content="https://amroth.life/images/allProds-Splash.png">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://amroth.life/">
     <meta property="twitter:title" content="Amroth | Complete Daily Nutrition Made Instant">
     <meta property="twitter:description" content="Instant multigrain health mixes, vegetable & fruit powders, and microgreens. Multigrains • Vegetables • Fruits • Microgreens—Complete nutrition in minutes.">
-    <meta property="twitter:image" content="https://amroth.life/images/allProducts.png">
+    <meta property="twitter:image" content="https://amroth.life/images/allProds-Splash.png">
 
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -27,13 +27,36 @@
     <link rel="icon" type="image/svg+xml" href="images/svg/amroth_logo.svg">
     <link rel="alternate icon" type="image/png" href="images/amroth_logo.png">
 
-    <!-- Google Analytics (GA4) - Captures page visits and location -->
+    <!-- Google Analytics (GA4) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-T5ERDNZHLZ"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-T5ERDNZHLZ');
+
+      // Enable Enhanced Measurement features
+      gtag('config', 'G-T5ERDNZHLZ', {
+        'send_page_view': true,
+        'enhanced_measurement': true,
+        'scroll_tracking': true,
+        'click_tracking': true
+      });
+
+      // Function to track WhatsApp clicks
+      function trackWhatsApp() {
+        gtag('event', 'whatsapp_click', {
+          'event_category': 'engagement',
+          'event_label': 'Order Now WhatsApp'
+        });
+      }
+
+      // Function to track Order Button clicks
+      function trackOrder() {
+        gtag('event', 'order_click', {
+          'event_category': 'conversion',
+          'event_label': 'Order Button'
+        });
+      }
     </script>
 </head>
 <body>
@@ -97,20 +120,20 @@
     </header>
 
     <section class="video-banner" aria-hidden="true">
-        <video class="bg-video" src="images/banner.mp4" autoplay muted loop playsinline preload="auto" poster="images/allProducts.png"></video>
+        <video class="bg-video" src="images/banner.mp4" autoplay muted loop playsinline preload="auto" poster="images/allProds-Splash.png"></video>
     </section>
 
     <!-- Hero Section -->
     <section id="home" class="hero">
         <div class="hero-container">
             <div class="hero-content">
-                <h1 class="hero-title">Complete Nutrition for Every Day in Minutes</h1>
+                <h1 class="hero-title">Complete Daily Nutrition Made Instant</h1>
                 <p class="hero-description">
-                    Multigrains, vegetables, fruits & microgreens — instant and natural nutrition for your busy life.
+                    Amroth offers instant healthy food products including multigrain energy mixes, sambar mix, vegetable powders, fruit powders, and microgreens. Designed for busy lifestyles, our products provide complete daily nutrition with natural ingredients and no preservatives.
                 </p>
                 <div class="hero-buttons">
-                    <a href="https://wa.me/918106350955" class="btn btn-primary" target="_blank">Order Now</a>
-                    <a href="#products-range" class="btn btn-secondary">View Products</a>
+                    <a href="https://wa.me/918106350955" class="btn btn-primary" target="_blank" onclick="trackWhatsApp(); trackOrder();">Order Now</a>
+                    <a href="#products" class="btn btn-secondary">View Products</a>
                 </div>
             </div>
             <div class="hero-logo-overlay">
@@ -356,28 +379,34 @@
             <!-- Product Category Blocks -->
             <div class="product-categories">
                 <div class="category-card">
-                    <div class="category-icon"><i class="fas fa-bolt"></i></div>
-                    <h3>Energy & Health Mixes</h3>
-                    <p>Multigrain energy mixes for sustained daily vitality.</p>
-                    <a href="#products-detail" class="category-link">View Details</a>
+                    <div class="category-icon"><i class="fas fa-seedling"></i></div>
+                    <h3>Multigrain Health Mixes</h3>
+                    <p>Nutrient-dense energy drinks for all ages.</p>
+                    <a href="multigrain-energy-mix.html" class="category-link">View Details</a>
                 </div>
                 <div class="category-card">
                     <div class="category-icon"><i class="fas fa-utensils"></i></div>
-                    <h3>Instant Meals</h3>
-                    <p>Sambar, Rasam, and Khichdi mixes—ready in minutes.</p>
-                    <a href="#products-detail" class="category-link">View Details</a>
+                    <h3>Instant Sambar Mixes</h3>
+                    <p>Authentic taste in minutes, no cooking stress.</p>
+                    <a href="instant-sambar-mix.html" class="category-link">View Details</a>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon"><i class="fas fa-carrot"></i></div>
+                    <h3>Vegetable Powders</h3>
+                    <p>Pure dehydrated vegetables for daily nutrition.</p>
+                    <a href="vegetable-powders.html" class="category-link">View Details</a>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon"><i class="fas fa-apple-alt"></i></div>
+                    <h3>Fruit Powders</h3>
+                    <p>Natural fruit goodness in easy-to-use powder form.</p>
+                    <a href="fruit-powders.html" class="category-link">View Details</a>
                 </div>
                 <div class="category-card">
                     <div class="category-icon"><i class="fas fa-leaf"></i></div>
-                    <h3>Nutrition Powders</h3>
-                    <p>Pure vegetable and fruit powders for natural nutrients.</p>
-                    <a href="#products-detail" class="category-link">View Details</a>
-                </div>
-                <div class="category-card">
-                    <div class="category-icon"><i class="fas fa-seedling"></i></div>
-                    <h3>Microgreens</h3>
-                    <p>Fresh superfoods and powders for a nutrition boost.</p>
-                    <a href="#products-detail" class="category-link">View Details</a>
+                    <h3>Fresh Microgreens</h3>
+                    <p>Living superfoods for maximum nutrient density.</p>
+                    <a href="microgreens.html" class="category-link">View Details</a>
                 </div>
             </div>
 
@@ -394,7 +423,7 @@
                 <!-- Health Drink Mix -->
                 <div class="product-card">
                     <div class="product-image">
-                        <img src="images/amroth-classic.png" alt="Health Drink Mix" class="product-img" loading="lazy">
+                        <img src="images/energy-mix-amroth.png" alt="Amroth multigrain energy mix healthy drink" class="product-img" loading="lazy">
                     </div>
                     <div class="product-content">
                         <h3>Amroth Health Drink Mix</h3>
@@ -443,7 +472,7 @@
                             <li><i class="fas fa-check-circle"></i> Made with naturally occurring nutrients from grains, millets, and pulses</li>
                             <li><i class="fas fa-check-circle"></i> Contains plant-based ingredients suitable for everyday consumption</li>
                         </ul>
-                        <a href="https://wa.me/918106350955" class="btn btn-primary product-cta">Order Now</a>
+                        <a href="https://wa.me/918106350955" class="btn btn-primary product-cta" onclick="trackWhatsApp(); trackOrder();">Order Now</a>
                     </div>
                 </div>
 
@@ -483,7 +512,7 @@
                             <li><i class="fas fa-check-circle"></i> Easy to use</li>
                             <li><i class="fas fa-check-circle"></i> Multiple varieties</li>
                         </ul>
-                        <a href="https://wa.me/918106350955" class="btn btn-primary product-cta">Order Now</a>
+                        <a href="https://wa.me/918106350955" class="btn btn-primary product-cta" onclick="trackWhatsApp(); trackOrder();">Order Now</a>
                     </div>
                 </div>
 
@@ -505,18 +534,18 @@
                             <li><i class="fas fa-check-circle"></i> Grown without synthetic pesticides</li>
                             <li><i class="fas fa-check-circle"></i> Multiple varieties</li>
                         </ul>
-                        <a href="https://wa.me/918106350955" class="btn btn-primary product-cta">Order Now</a>
+                        <a href="https://wa.me/918106350955" class="btn btn-primary product-cta" onclick="trackWhatsApp(); trackOrder();">Order Now</a>
                     </div>
                 </div>
 
                 <!-- Amroth Instant Curry Mixes -->
                 <div class="product-card">
                     <div class="product-image">
-                        <img src="images/currymix.png" alt="Amroth Instant Curry Mixes" class="product-img" loading="lazy">
+                        <img src="images/sambar-mix-amroth.png" alt="Amroth instant sambar mix healthy meal" class="product-img" loading="lazy">
                     </div>
                     <div class="product-content">
                         <h3>Amroth Instant Curry Mixes</h3>
-                        <p class="product-subtitle">Instant Sambar Mix & Traditional Ready-to-Cook Blends</p>
+                        <p class="product-subtitle">Authentic Sambar & Instant Meal Solutions</p>
                         <p class="product-description">
                             Our instant sambar mix and curry blends are made from dehydrated vegetables and roasted spices.
                             Just add water and boil for an easy, home-style South Indian meal ready in minutes.
@@ -551,7 +580,7 @@
                             <li><i class="fas fa-check-circle"></i> No artificial additives</li>
                             <li><i class="fas fa-check-circle"></i> Travel-friendly</li>
                         </ul>
-                        <a href="https://wa.me/918106350955" class="btn btn-primary product-cta">Order Now</a>
+                        <a href="https://wa.me/918106350955" class="btn btn-primary product-cta" onclick="trackWhatsApp(); trackOrder();">Order Now</a>
                     </div>
                 </div>
             </div>
@@ -750,8 +779,9 @@
                 <div class="footer-section">
                     <h4>Quick Links</h4>
                     <ul>
-                        <li><a href="#home">Home</a></li>
+                        <li><a href="index.html">Home</a></li>
                         <li><a href="#products">Products</a></li>
+                        <li><a href="blog.html">Blog</a></li>
                         <li><a href="#about">About</a></li>
                         <li><a href="#contact">Contact</a></li>
                     </ul>
@@ -760,10 +790,11 @@
                 <div class="footer-section">
                     <h4>Products</h4>
                     <ul>
-                        <li><a href="#products">Amroth Health Drink Mix</a></li>
-                        <li><a href="#products">Amroth Vegetable & Fruit Powders</a></li>
-                        <li><a href="#products">Amroth Microgreens</a></li>
-                        <li><a href="#products">Amroth Instant Curry Mixes</a></li>
+                        <li><a href="multigrain-energy-mix.html">Energy Mix</a></li>
+                        <li><a href="instant-sambar-mix.html">Sambar Mix</a></li>
+                        <li><a href="vegetable-powders.html">Vegetable Powders</a></li>
+                        <li><a href="fruit-powders.html">Fruit Powders</a></li>
+                        <li><a href="microgreens.html">Microgreens</a></li>
                     </ul>
                 </div>
                 
