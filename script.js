@@ -43,7 +43,7 @@ const observer = new IntersectionObserver((entries) => {
 // Observe elements for animation
 document.addEventListener('DOMContentLoaded', () => {
     const animatedElements = document.querySelectorAll(
-        '.product-card, .infra-card, .nutrition-card, .stat-card, .solution-card, .trust-card, .step, .section-header, .objective-card, .contact-card, .value-item, .hero-content, .hero-logo-overlay'
+        '.product-card, .infra-card, .nutrition-card, .stat-card, .solution-card, .trust-card, .step, .section-header, .objective-card, .contact-card, .value-item, .hero-content, .hero-logo-overlay, .testimonial-card, .certificate-card'
     );
     
     animatedElements.forEach(el => {
@@ -482,8 +482,172 @@ style.textContent = `
     .notification-close:hover {
         opacity: 0.8;
     }
+    
+    .typing-dots {
+        display: flex;
+        gap: 4px;
+    }
+    
+    .typing-dots span {
+        width: 8px;
+        height: 8px;
+        background: var(--text-muted);
+        border-radius: 50%;
+        animation: typingAnimation 1.4s infinite ease-in-out both;
+    }
+    
+    .typing-dots span:nth-child(1) { animation-delay: -0.32s; }
+    .typing-dots span:nth-child(2) { animation-delay: -0.16s; }
+    
+    @keyframes typingAnimation {
+        0%, 80%, 100% { transform: scale(0); }
+        40% { transform: scale(1); }
+    }
 `;
 document.head.appendChild(style);
+
+// Chatbot Functionality
+const chatbotToggle = document.getElementById('chatbot-toggle');
+const chatbotWindow = document.getElementById('chatbot-window');
+const chatbotClose = document.getElementById('chatbot-close');
+const chatbotInput = document.getElementById('chatbot-input');
+const chatbotSend = document.getElementById('chatbot-send');
+const chatbotMessages = document.getElementById('chatbot-messages');
+
+if (chatbotToggle && chatbotWindow) {
+    chatbotToggle.addEventListener('click', () => {
+        chatbotWindow.classList.toggle('active');
+    });
+}
+
+if (chatbotClose && chatbotWindow) {
+    chatbotClose.addEventListener('click', () => {
+        chatbotWindow.classList.remove('active');
+    });
+}
+
+const chatbotResponses = {
+    'hi': 'Hi there! Welcome to Amroth Nutrition. How can I assist you today?',
+    'hello': 'Hello! Welcome to Amroth Nutrition. What would you like to know about?',
+    'hey': 'Hey! How can I help you with Amroth products today?',
+    'amroth': 'Amroth Nutrition offers 100% natural, preservative-free instant healthy food products including multigrain mixes, sambar mix, vegetable & fruit powders, and microgreens.',
+    'products': 'We offer 5 amazing products: Multigrain Energy Mix, Instant Sambar Mix, Vegetable Powders, Fruit Powders, and Fresh Microgreens.',
+    'product': 'We offer 5 amazing products: Multigrain Energy Mix, Instant Sambar Mix, Vegetable Powders, Fruit Powders, and Fresh Microgreens.',
+    'price': 'For pricing details, please contact us via WhatsApp or email. We\'ll be happy to assist you!',
+    'cost': 'For cost details, please contact us via WhatsApp or email. We\'ll be happy to assist you!',
+    'order': 'Great! You can order by clicking on the "Order Now" button or via WhatsApp at +91 8106350955.',
+    'how to order': 'You can order by clicking on the "Order Now" button or via WhatsApp at +91 8106350955.',
+    'buy': 'You can buy our products by clicking on the "Order Now" button or via WhatsApp at +91 8106350955.',
+    'purchase': 'To purchase Amroth products, click on the "Order Now" button or contact us via WhatsApp at +91 8106350955.',
+    'contact': 'You can reach us at: Phone: +91 7702741798, Email: amrothproducts@gmail.com',
+    'email': 'You can email us at amrothproducts@gmail.com',
+    'phone': 'You can call us at +91 7702741798',
+    'whatsapp': 'You can reach us on WhatsApp at +91 8106350955',
+    'location': 'We are located in Takkellapadu Village, Amaravathi District, Andhra Pradesh.',
+    'address': 'Our address is Takkellapadu Village, Amaravathi District, Andhra Pradesh.',
+    'ingredients': 'All our products are made with 100% natural ingredients with no preservatives or artificial additives.',
+    'natural': 'Yes! All Amroth products are 100% natural with no preservatives, artificial colors, or chemicals.',
+    'preservatives': 'No! All our products are 100% natural with no preservatives, artificial colors, or chemicals.',
+    'additives': 'No! We don\'t use any artificial additives or preservatives in our products.',
+    'shipping': 'For shipping information, please contact us via WhatsApp or email.',
+    'delivery': 'For delivery information, please contact us via WhatsApp or email.',
+    'multigrain': 'Our Multigrain Energy Mix is made with 25+ natural ingredients including cereals, pulses, millets, nuts, and seeds.',
+    'sambar': 'Our Instant Sambar Mix is made with dehydrated vegetables and roasted spices for authentic taste in minutes.',
+    'vegetable': 'Our Vegetable Powders are pure dehydrated vegetables for daily nutrition.',
+    'fruit': 'Our Fruit Powders are natural fruit goodness in easy-to-use powder form.',
+    'microgreens': 'Our Fresh Microgreens are living superfoods for maximum nutrient density.',
+    'thanks': 'You\'re welcome! Is there anything else I can help you with?',
+    'thank you': 'You\'re welcome! Is there anything else I can assist you with?',
+    'ok': 'Great! Is there anything else you\'d like to know about Amroth?',
+    'okay': 'Perfect! Let me know if you need any other information about our products.',
+    'default': 'I\'m here to help! You can ask me about Amroth, our products, ingredients, ordering, pricing, or contact information.',
+};
+
+function getBotResponse(message) {
+    const lowerMessage = message.toLowerCase();
+    for (const [key, response] of Object.entries(chatbotResponses)) {
+        if (lowerMessage.includes(key)) {
+            return response;
+        }
+    }
+    return chatbotResponses.default;
+}
+
+function addMessage(text, isUser) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `chat-message ${isUser ? 'user-message' : 'bot-message'}`;
+    
+    const avatar = document.createElement('div');
+    avatar.className = 'message-avatar';
+    avatar.innerHTML = isUser ? '<i class="fas fa-user"></i>' : '<i class="fas fa-leaf"></i>';
+    
+    const content = document.createElement('div');
+    content.className = 'message-content';
+    const paragraph = document.createElement('p');
+    paragraph.textContent = text;
+    content.appendChild(paragraph);
+    
+    messageDiv.appendChild(avatar);
+    messageDiv.appendChild(content);
+    
+    chatbotMessages.appendChild(messageDiv);
+    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+}
+
+function showTypingIndicator() {
+    const typingDiv = document.createElement('div');
+    typingDiv.className = 'chat-message bot-message typing-indicator';
+    typingDiv.id = 'typing-indicator';
+    
+    const avatar = document.createElement('div');
+    avatar.className = 'message-avatar';
+    avatar.innerHTML = '<i class="fas fa-leaf"></i>';
+    
+    const content = document.createElement('div');
+    content.className = 'message-content';
+    content.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
+    
+    typingDiv.appendChild(avatar);
+    typingDiv.appendChild(content);
+    
+    chatbotMessages.appendChild(typingDiv);
+    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+}
+
+function removeTypingIndicator() {
+    const typingIndicator = document.getElementById('typing-indicator');
+    if (typingIndicator) {
+        typingIndicator.remove();
+    }
+}
+
+function sendMessage() {
+    const message = chatbotInput.value.trim();
+    if (!message) return;
+    
+    addMessage(message, true);
+    chatbotInput.value = '';
+    
+    showTypingIndicator();
+    
+    setTimeout(() => {
+        removeTypingIndicator();
+        const botResponse = getBotResponse(message);
+        addMessage(botResponse, false);
+    }, 1000);
+}
+
+if (chatbotSend) {
+    chatbotSend.addEventListener('click', sendMessage);
+}
+
+if (chatbotInput) {
+    chatbotInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    });
+}
 
 console.log('Ikshwaaks Nutrition website loaded successfully!');
 
