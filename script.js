@@ -649,6 +649,15 @@ if (chatbotInput) {
     });
 }
 
+const quickReplies = document.querySelectorAll('.quick-reply-btn');
+quickReplies.forEach(btn => {
+    btn.addEventListener('click', () => {
+        const message = btn.getAttribute('data-message');
+        chatbotInput.value = message;
+        sendMessage();
+    });
+});
+
 console.log('Ikshwaaks Nutrition website loaded successfully!');
 
 // Check if there are any company name references in JavaScript
