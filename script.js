@@ -53,35 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// Contact form handling
-const contactForm = document.querySelector('.contact-form form');
-if (contactForm) {
-    contactForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Get form data
-        const formData = new FormData(this);
-        const name = this.querySelector('input[type="text"]').value;
-        const email = this.querySelector('input[type="email"]').value;
-        const subject = this.querySelector('input[type="text"]:nth-of-type(2)').value;
-        const message = this.querySelector('textarea').value;
-        
-        // Basic validation
-        if (!name || !email || !subject || !message) {
-            showNotification('Please fill in all fields', 'error');
-            return;
-        }
-        
-        if (!isValidEmail(email)) {
-            showNotification('Please enter a valid email address', 'error');
-            return;
-        }
-        
-        // Simulate form submission
-        showNotification('Thank you for your message! We will get back to you soon.', 'success');
-        this.reset();
-    });
-}
+
 
 // Scroll to Top Button Logic
 const scrollTopBtn = document.getElementById('scrollTop');
