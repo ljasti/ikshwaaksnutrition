@@ -658,7 +658,35 @@ quickReplies.forEach(btn => {
     });
 });
 
-console.log('Ikshwaaks Nutrition website loaded successfully!');
+// Amroth Form Submission to n8n Webhook
+const amrothForm = document.getElementById('amrothForm');
+if (amrothForm) {
+    amrothForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const form = e.target;
+        const data = Object.fromEntries(new FormData(form));
+        
+        try {
+            const res = await fetch('https://n8n.amroth.life/webhook/amroth-lead', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            
+            if (res.ok) {
+                showNotification('Thank you! We will contact you soon.', 'success');
+                form.reset();
+            } else {
+                showNotification('Something went wrong. Please try again.', 'error');
+            }
+        } catch (error) {
+            console.error(error);
+            showNotification('Network error. Please try again.', 'error');
+        }
+    });
+}
 
-// Check if there are any company name references in JavaScript
-// (No changes needed as the JS doesn't contain company name references)
+console.log('Ikshwaaks Nutrition website loaded successfully!');

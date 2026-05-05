@@ -949,25 +949,28 @@
                 </div>
                 
                 <div class="contact-form">
-                    <form action="https://formsubmit.co/info@info@a.lmfe="POST">
-                        <!-- FormSubmit Configuration -->
-                        <input type="hidden" name="_subject" value="New Message from Amroth.life Website">
-                        <input type="hidden" name="_template" value="table">
-                        <input type="hidden" name="_captcha" value="false">
-                        
+                    <form id="amrothForm">
                         <div class="form-group">
-                            <input type="text" name="name" placeholder="Your Name" required>
+                            <input name="name" placeholder="Full Name" required>
                         </div>
                         <div class="form-group">
-                            <input type="email" name="email" placeholder="Your Email" required>
+                            <input name="phone" placeholder="Phone Number" required>
                         </div>
                         <div class="form-group">
-                            <input type="text" name="subject" placeholder="Subject" required>
+                            <input name="email" placeholder="Email (optional)">
                         </div>
                         <div class="form-group">
-                            <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+                            <select name="product_interest" required>
+                                <option value="" disabled selected>Select Product Interest</option>
+                                <option value="multi_grain_breakfast_mix">Multi Grain Breakfast Mix</option>
+                                <option value="energy_drink_mix">Energy Drink Mix</option>
+                                <option value="ready_meal_base">Ready Meal Base</option>
+                            </select>
                         </div>
-                        <button type="submit" class="btn btn-primary">Send Message</button>
+                        <div class="form-group">
+                            <input name="city" placeholder="City (optional)">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Get Details</button>
                     </form>
                 </div>
             </div>

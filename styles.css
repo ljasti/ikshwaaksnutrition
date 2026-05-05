@@ -1673,17 +1673,21 @@ body {
 }
 
 .form-group input, 
-.form-group textarea {
+.form-group textarea,
+.form-group select {
     width: 100%;
     padding: 0.75rem 1rem;
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: var(--radius-sm);
     font-family: inherit;
+    font-size: 1rem;
     transition: var(--transition-base);
+    background-color: white;
 }
 
 .form-group input:focus,
-.form-group textarea:focus {
+.form-group textarea:focus,
+.form-group select:focus {
     outline: none;
     border-color: var(--primary);
     box-shadow: 0 0 0 3px rgba(252, 144, 77, 0.1);
