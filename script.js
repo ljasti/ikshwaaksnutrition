@@ -659,45 +659,48 @@ quickReplies.forEach(btn => {
 });
 
 // Amroth Form Submission to n8n Webhook
-console.log('Looking for amrothForm...');
-const amrothForm = document.getElementById('amrothForm');
-console.log('amrothForm found:', !!amrothForm);
-if (amrothForm) {
-    console.log('Adding submit event listener to amrothForm');
-    amrothForm.addEventListener('submit', async (e) => {
-        console.log('Form submitted!');
-        e.preventDefault();
-        
-        const form = e.target;
-        const data = Object.fromEntries(new FormData(form));
-        
-        console.log('Form data to send:', data);
-        console.log('Webhook URL:', 'https://n8n.amroth.life/webhook/fb5af8a0-2551-4c0f-a992-9258a1d9ec4c');
-        
-        try {
-            const res = await fetch('https://n8n.amroth.life/webhook/fb5af8a0-2551-4c0f-a992-9258a1d9ec4c', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            });
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM fully loaded');
+    console.log('Looking for amrothForm...');
+    const amrothForm = document.getElementById('amrothForm');
+    console.log('amrothForm found:', !!amrothForm);
+    if (amrothForm) {
+        console.log('Adding submit event listener to amrothForm');
+        amrothForm.addEventListener('submit', async (e) => {
+            console.log('Form submitted!');
+            e.preventDefault();
             
-            console.log('Response status:', res.status, res.statusText);
-            const responseText = await res.text();
-            console.log('Response body:', responseText);
+            const form = e.target;
+            const data = Object.fromEntries(new FormData(form));
             
-            if (res.ok) {
-                showNotification('Thank you! We will contact you soon.', 'success');
-                form.reset();
-            } else {
-                showNotification('Something went wrong. Please try again.', 'error');
+            console.log('Form data to send:', data);
+            console.log('Webhook URL:', 'https://n8n.amroth.life/webhook/fb5af8a0-2551-4c0f-a992-9258a1d9ec4c');
+            
+            try {
+                const res = await fetch('https://n8n.amroth.life/webhook/fb5af8a0-2551-4c0f-a992-9258a1d9ec4c', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                console.log('Response status:', res.status, res.statusText);
+                const responseText = await res.text();
+                console.log('Response body:', responseText);
+                
+                if (res.ok) {
+                    showNotification('Thank you! We will contact you soon.', 'success');
+                    form.reset();
+                } else {
+                    showNotification('Something went wrong. Please try again.', 'error');
+                }
+            } catch (error) {
+                console.error('Error details:', error);
+                showNotification('Network error. Please try again.', 'error');
             }
-        } catch (error) {
-            console.error('Error details:', error);
-            showNotification('Network error. Please try again.', 'error');
-        }
-    });
-}
+        });
+    }
+});
 
 console.log('Ikshwaaks Nutrition website loaded successfully!');
