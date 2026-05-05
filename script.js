@@ -667,6 +667,9 @@ if (amrothForm) {
         const form = e.target;
         const data = Object.fromEntries(new FormData(form));
         
+        console.log('Form data to send:', data);
+        console.log('Webhook URL:', 'https://n8n.amroth.life/webhook/b2bff4ca-e25a-46a7-b0b8-abefdd204d22');
+        
         try {
             const res = await fetch('https://n8n.amroth.life/webhook/b2bff4ca-e25a-46a7-b0b8-abefdd204d22', {
                 method: 'POST',
@@ -676,6 +679,10 @@ if (amrothForm) {
                 body: JSON.stringify(data)
             });
             
+            console.log('Response status:', res.status, res.statusText);
+            const responseText = await res.text();
+            console.log('Response body:', responseText);
+            
             if (res.ok) {
                 showNotification('Thank you! We will contact you soon.', 'success');
                 form.reset();
@@ -683,7 +690,7 @@ if (amrothForm) {
                 showNotification('Something went wrong. Please try again.', 'error');
             }
         } catch (error) {
-            console.error(error);
+            console.error('Error details:', error);
             showNotification('Network error. Please try again.', 'error');
         }
     });
