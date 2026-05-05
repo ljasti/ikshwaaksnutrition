@@ -659,9 +659,13 @@ quickReplies.forEach(btn => {
 });
 
 // Amroth Form Submission to n8n Webhook
+console.log('Looking for amrothForm...');
 const amrothForm = document.getElementById('amrothForm');
+console.log('amrothForm found:', !!amrothForm);
 if (amrothForm) {
+    console.log('Adding submit event listener to amrothForm');
     amrothForm.addEventListener('submit', async (e) => {
+        console.log('Form submitted!');
         e.preventDefault();
         
         const form = e.target;
