@@ -646,10 +646,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = Object.fromEntries(new FormData(form));
             
             console.log('Form data to send:', data);
-            console.log('Webhook URL:', 'https://n8n.amroth.life/webhook/fb5af8a0-2551-4c0f-a992-9258a1d9ec4c');
+            console.log('Webhook URL:', 'https://n8n.amroth.life/webhook/amroth-lead');
             
             try {
-                const res = await fetch('https://n8n.amroth.life/webhook/fb5af8a0-2551-4c0f-a992-9258a1d9ec4c', {
+                const res = await fetch('https://n8n.amroth.life/webhook/amroth-lead', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
