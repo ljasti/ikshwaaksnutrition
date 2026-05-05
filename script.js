@@ -668,7 +668,7 @@ if (amrothForm) {
         const data = Object.fromEntries(new FormData(form));
         
         try {
-            const res = await fetch('https://n8n.amroth.life/webhook/amroth-lead', {
+            const res = await fetch('https://n8n.amroth.life/webhook/b2bff4ca-e25a-46a7-b0b8-abefdd204d22', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
