@@ -1,678 +1,552 @@
-// Header scroll effect
-const header = document.querySelector('.header');
-window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) {
-        header.classList.add('scrolled');
-    } else {
-        header.classList.remove('scrolled');
+/**
+ * Amroth.life — W1 Commander intake, analytics, a11y helpers.
+ * No secrets. No Business IDs. WhatsApp click ≠ Lead.
+ */
+(function () {
+  const cfg = window.AMROTH_PUBLIC || {};
+  const isDev = /^(localhost|127\.0\.0\.1)$/.test(location.hostname) || location.search.includes("debug=true");
+
+  function track(name, params) {
+    if (isDev) {
+      console.log("[analytics]", name, params);
+      return;
     }
-});
+    if (typeof gtag === "function") gtag("event", name, { ...params, transport_type: "beacon" });
+  }
 
-// Mobile Navigation Toggle
-const hamburger = document.querySelector('.hamburger');
-const navMenu = document.querySelector('.nav-menu');
+  function qs(sel, root) {
+    return (root || document).querySelector(sel);
+  }
+  function qsa(sel, root) {
+    return Array.from((root || document).querySelectorAll(sel));
+  }
 
-if (hamburger) {
-    hamburger.addEventListener('click', () => {
-        hamburger.classList.toggle('active');
-        navMenu.classList.toggle('active');
+  function utmBag() {
+    const p = new URLSearchParams(location.search);
+    return {
+      utmSource: p.get("utm_source") || sessionStorage.getItem("utm_source"),
+      utmMedium: p.get("utm_medium") || sessionStorage.getItem("utm_medium"),
+      utmCampaign: p.get("utm_campaign") || sessionStorage.getItem("utm_campaign"),
+      utmContent: p.get("utm_content") || sessionStorage.getItem("utm_content"),
+      referrer: document.referrer || sessionStorage.getItem("referrer") || null,
+      landingPage: sessionStorage.getItem("landing_page") || location.href,
+    };
+  }
+
+  function persistAttribution() {
+    const p = new URLSearchParams(location.search);
+    ["utm_source", "utm_medium", "utm_campaign", "utm_content"].forEach((k) => {
+      if (p.get(k)) sessionStorage.setItem(k, p.get(k));
     });
-}
+    if (document.referrer && !sessionStorage.getItem("referrer")) sessionStorage.setItem("referrer", document.referrer);
+    if (!sessionStorage.getItem("landing_page")) sessionStorage.setItem("landing_page", location.href);
+  }
 
-// Close mobile menu when clicking on a link
-document.querySelectorAll('.nav-link').forEach(n => n.addEventListener('click', () => {
-    hamburger?.classList.remove('active');
-    navMenu?.classList.remove('active');
-}));
+  function idemKey() {
+    const k = "amroth_idem_" + location.pathname;
+    let v = sessionStorage.getItem(k);
+    if (!v) {
+      v = "web-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 10);
+      sessionStorage.setItem(k, v);
+    }
+    return v;
+  }
 
-// Intersection Observer for animations
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
+  function showStatus(el, msg, kind) {
+    if (!el) return;
+    el.textContent = msg;
+    el.dataset.kind = kind || "info";
+  }
 
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('animate-in');
-            observer.unobserve(entry.target);
+  // Header
+  const header = qs(".header");
+  window.addEventListener("scroll", () => {
+    header?.classList.toggle("scrolled", window.scrollY > 40);
+  });
+
+  const hamburger = qs(".hamburger");
+  const navMenu = qs(".nav-menu");
+  hamburger?.addEventListener("click", () => {
+    const open = navMenu?.classList.toggle("is-open");
+    navMenu?.classList.toggle("active", !!open);
+    hamburger.setAttribute("aria-expanded", open ? "true" : "false");
+    hamburger.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+  });
+  qsa(".nav-link").forEach((a) =>
+    a.addEventListener("click", () => {
+      navMenu?.classList.remove("active", "is-open");
+      hamburger?.setAttribute("aria-expanded", "false");
+      hamburger?.setAttribute("aria-label", "Open menu");
+    }),
+  );
+
+  // Single scroll-top
+  const scrollTopBtn = qs("#scrollTop");
+  window.addEventListener("scroll", () => {
+    const show = window.scrollY > 300;
+    scrollTopBtn?.classList.toggle("show", show);
+    scrollTopBtn?.classList.toggle("is-visible", show);
+  });
+  scrollTopBtn?.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+
+  persistAttribution();
+
+  // Glass premium selects — replace native OS menus with crystal dropdowns
+  function enhanceGlassSelect(select) {
+    if (!select || select.dataset.glassSelect === "1") return;
+    select.dataset.glassSelect = "1";
+    select.classList.add("amroth-select-native");
+
+    const wrap = document.createElement("div");
+    wrap.className = "amroth-select";
+    select.parentNode.insertBefore(wrap, select);
+    wrap.appendChild(select);
+
+    const trigger = document.createElement("button");
+    trigger.type = "button";
+    trigger.className = "amroth-select__trigger";
+    trigger.setAttribute("aria-haspopup", "listbox");
+    trigger.setAttribute("aria-expanded", "false");
+    if (select.id) trigger.setAttribute("aria-labelledby", select.id + "-label");
+    if (select.id) {
+      const lab = document.querySelector(`label[for="${select.id}"]`);
+      if (lab && !lab.id) lab.id = select.id + "-label";
+    }
+
+    const valueEl = document.createElement("span");
+    valueEl.className = "amroth-select__value";
+
+    const chevron = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    chevron.setAttribute("class", "amroth-select__chevron");
+    chevron.setAttribute("viewBox", "0 0 16 16");
+    chevron.setAttribute("aria-hidden", "true");
+    chevron.innerHTML = '<path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>';
+
+    trigger.appendChild(valueEl);
+    trigger.appendChild(chevron);
+
+    const menu = document.createElement("ul");
+    menu.className = "amroth-select__menu";
+    menu.setAttribute("role", "listbox");
+    if (select.id) menu.id = select.id + "-listbox";
+    trigger.setAttribute("aria-controls", menu.id);
+
+    function selectedLabel() {
+      const opt = select.options[select.selectedIndex];
+      return opt ? opt.textContent : "";
+    }
+
+    function syncFromSelect() {
+      valueEl.textContent = selectedLabel();
+      qsa(".amroth-select__option", menu).forEach((btn) => {
+        const on = btn.dataset.value === select.value;
+        btn.classList.toggle("is-selected", on);
+        btn.setAttribute("aria-selected", on ? "true" : "false");
+      });
+    }
+
+    function close() {
+      wrap.classList.remove("is-open");
+      trigger.setAttribute("aria-expanded", "false");
+    }
+
+    function open() {
+      qsa(".amroth-select.is-open").forEach((el) => {
+        if (el !== wrap) el.classList.remove("is-open");
+      });
+      wrap.classList.add("is-open");
+      trigger.setAttribute("aria-expanded", "true");
+      const sel = qs(".amroth-select__option.is-selected", menu);
+      (sel || qs(".amroth-select__option", menu))?.focus();
+    }
+
+    Array.from(select.options).forEach((opt) => {
+      const li = document.createElement("li");
+      li.setAttribute("role", "presentation");
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "amroth-select__option";
+      btn.setAttribute("role", "option");
+      btn.dataset.value = opt.value;
+      btn.textContent = opt.textContent;
+      btn.addEventListener("click", () => {
+        select.value = opt.value;
+        select.dispatchEvent(new Event("change", { bubbles: true }));
+        syncFromSelect();
+        close();
+        trigger.focus();
+      });
+      li.appendChild(btn);
+      menu.appendChild(li);
+    });
+
+    trigger.addEventListener("click", () => {
+      if (wrap.classList.contains("is-open")) close();
+      else open();
+    });
+
+    trigger.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowDown" || e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        open();
+      }
+    });
+
+    menu.addEventListener("keydown", (e) => {
+      const options = qsa(".amroth-select__option", menu);
+      const i = options.indexOf(document.activeElement);
+      if (e.key === "Escape") {
+        e.preventDefault();
+        close();
+        trigger.focus();
+      } else if (e.key === "ArrowDown") {
+        e.preventDefault();
+        options[Math.min(i + 1, options.length - 1)]?.focus();
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        options[Math.max(i - 1, 0)]?.focus();
+      } else if (e.key === "Home") {
+        e.preventDefault();
+        options[0]?.focus();
+      } else if (e.key === "End") {
+        e.preventDefault();
+        options[options.length - 1]?.focus();
+      }
+    });
+
+    select.addEventListener("change", syncFromSelect);
+    wrap.appendChild(trigger);
+    wrap.appendChild(menu);
+    syncFromSelect();
+  }
+
+  qsa(".enquiry-form select").forEach(enhanceGlassSelect);
+
+  document.addEventListener("click", (e) => {
+    qsa(".amroth-select.is-open").forEach((el) => {
+      if (!el.contains(e.target)) el.classList.remove("is-open");
+    });
+  });
+
+  // Audience paths — select + scroll to single form
+  qsa(".path-card[data-audience], [data-audience]").forEach((el) => {
+    el.addEventListener("click", () => {
+      const audience = el.getAttribute("data-audience");
+      track("audience_path_selection", { audience, cta: el.getAttribute("data-cta") || "" });
+      qsa(".path-card").forEach((c) => c.classList.remove("is-selected"));
+      if (el.classList.contains("path-card")) el.classList.add("is-selected");
+      const intent = qs("#intent");
+      if (intent && audience) {
+        const map = {
+          "direct-customer": "direct-customer",
+          distributor: "distributor",
+          retailer: "retailer",
+          institution: "institution",
+          "export-buyer": "export-buyer",
+        };
+        if (map[audience]) intent.value = map[audience];
+        if (audience === "institution") intent.value = "institution";
+        intent.dispatchEvent(new Event("change", { bubbles: true }));
+      }
+      qs("#enquire")?.scrollIntoView({ behavior: "smooth" });
+    });
+  });
+
+  qsa("[data-product-cta]").forEach((el) => {
+    el.addEventListener("click", () => {
+      const product = el.getAttribute("data-product-cta");
+      track("product_view", { product });
+      const sel = qs("#productInterest");
+      if (sel && product) {
+        sel.value = product;
+        sel.dispatchEvent(new Event("change", { bubbles: true }));
+      }
+    });
+  });
+
+  // WhatsApp sticky — contact-intent only; prefers enquiry ref after form success
+  const wa = qs("#whatsappSticky");
+  function waHref(ref) {
+    const e164 = cfg.whatsappEnquiryE164 || "918106350955";
+    const text = ref
+      ? `Hi Amroth — enquiry ref ${ref}.`
+      : "Hi Amroth — I would like product details (I have not submitted the web form yet).";
+    return `https://wa.me/${e164}?text=${encodeURIComponent(text)}`;
+  }
+  if (wa) {
+    wa.setAttribute("href", waHref(sessionStorage.getItem("amroth_enquiry_ref")));
+    wa.addEventListener("click", () => {
+      track("whatsapp_click", { cta: "wa-sticky", has_ref: Boolean(sessionStorage.getItem("amroth_enquiry_ref")) });
+    });
+  }
+
+  // Form → Commander
+  const form = qs("#amrothForm");
+  const status = qs("#formStatus");
+  const submitBtn = qs("#formSubmit");
+  let lastPayload = null;
+
+  form?.addEventListener("focusin", () => track("form_start", { form: "amroth-enquiry" }), { once: true });
+
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const fd = new FormData(form);
+    const phone = String(fd.get("phone") || "").trim();
+    const email = String(fd.get("email") || "").trim();
+    if (!phone && !email) {
+      showStatus(status, "Provide a phone number or email.", "error");
+      track("form_validation_failure", { reason: "contact" });
+      return;
+    }
+    if (!fd.get("consentAccepted")) {
+      showStatus(status, "Consent is required.", "error");
+      track("form_validation_failure", { reason: "consent" });
+      return;
+    }
+
+    const attr = utmBag();
+    const productInterest = String(fd.get("productInterest") || "");
+    const payload = {
+      idempotencyKey: idemKey(),
+      intent: String(fd.get("intent") || "product-enquiry"),
+      name: String(fd.get("name") || "").trim(),
+      phone: phone || undefined,
+      email: email || undefined,
+      city: String(fd.get("city") || "").trim() || undefined,
+      organizationName: String(fd.get("organizationName") || "").trim() || undefined,
+      productInterest: productInterest === "Other / unmapped" ? "Unmapped interest" : productInterest,
+      message: String(fd.get("message") || "").trim() || undefined,
+      consentAccepted: true,
+      consentVersion: cfg.consentVersion || "amroth-web-consent-v1",
+      consentAt: new Date().toISOString(),
+      landingPage: attr.landingPage,
+      referrer: attr.referrer,
+      ctaId: "enquiry-form",
+      utmSource: attr.utmSource || undefined,
+      utmMedium: attr.utmMedium || undefined,
+      utmCampaign: attr.utmCampaign || undefined,
+      utmContent: attr.utmContent || undefined,
+      honeypot: String(fd.get("honeypot") || ""),
+      channel: "website",
+    };
+    lastPayload = payload;
+
+    const url = cfg.intakeUrl;
+    if (!url) {
+      showStatus(status, "Intake is not configured.", "error");
+      return;
+    }
+
+    submitBtn.disabled = true;
+    showStatus(status, "Submitting…", "pending");
+    try {
+      const res = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Idempotency-Key": payload.idempotencyKey,
+        },
+        body: JSON.stringify(payload),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok || !json.accepted) {
+        track("lead_submission_failure", { status: res.status });
+        showStatus(status, json.message || "Could not submit. Your entries are kept — tap Submit to retry.", "error");
+        submitBtn.disabled = false;
+        return;
+      }
+      sessionStorage.setItem("amroth_enquiry_ref", json.enquiryRef);
+      if (wa && json.whatsappContinueUrl) wa.setAttribute("href", json.whatsappContinueUrl);
+      track(json.investorOnly ? "quote_request" : "lead_submission_success", { created: json.created });
+      if (productInterest.includes("Sample") || payload.intent === "sample") track("sample_request", {});
+      showStatus(
+        status,
+        (json.message || "Thank you.") + (json.enquiryRef ? ` Reference: ${json.enquiryRef}` : "") +
+          (json.whatsappContinueUrl ? " You may continue on WhatsApp with this reference." : ""),
+        "success",
+      );
+      // Keep fields on success except honeypot — user may open WhatsApp
+      submitBtn.disabled = false;
+      // New idempotency for a fresh enquiry
+      sessionStorage.removeItem("amroth_idem_" + location.pathname);
+    } catch (err) {
+      console.error(err);
+      track("lead_submission_failure", { status: "network" });
+      showStatus(status, "Network error. Your entries are kept — please retry.", "error");
+      submitBtn.disabled = false;
+      if (lastPayload) {
+        /* retained in form DOM */
+      }
+    }
+  });
+
+  console.log("Amroth W1 site ready");
+
+  /* Live amroth.life counter — exact behaviour from stable script.js */
+  function animateCounters() {
+    const counters = document.querySelectorAll(".stat-number");
+    counters.forEach((counter) => {
+      const target = counter.textContent;
+      const isPercentage = target.includes("%");
+      const hasPlus = target.includes("+");
+      const numericTarget = parseInt(String(target).replace(/\D/g, ""), 10);
+      if (!numericTarget && numericTarget !== 0) return;
+
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        if (isPercentage) counter.textContent = numericTarget + "%";
+        else if (hasPlus) counter.textContent = numericTarget + "+";
+        else counter.textContent = String(numericTarget);
+        return;
+      }
+
+      let current = 0;
+      const increment = numericTarget / 100;
+      const timer = setInterval(() => {
+        current += increment;
+        if (current >= numericTarget) {
+          current = numericTarget;
+          clearInterval(timer);
         }
-    });
-}, observerOptions);
-
-// Observe elements for animation
-document.addEventListener('DOMContentLoaded', () => {
-    const animatedElements = document.querySelectorAll(
-        '.product-card, .infra-card, .nutrition-card, .stat-card, .solution-card, .trust-card, .step, .section-header, .objective-card, .contact-card, .value-item, .hero-content, .hero-logo-overlay, .testimonial-card, .certificate-card'
-    );
-    
-    animatedElements.forEach(el => {
-        el.classList.add('reveal');
-        observer.observe(el);
-    });
-});
-
-
-
-
-// Scroll to Top Button Logic
-const scrollTopBtn = document.getElementById('scrollTop');
-window.addEventListener('scroll', () => {
-    if (window.scrollY > 300) {
-        scrollTopBtn?.classList.add('show');
-    } else {
-        scrollTopBtn?.classList.remove('show');
-    }
-});
-
-scrollTopBtn?.addEventListener('click', () => {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
-});
-
-// Email validation function
-function isValidEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-}
-
-// Notification system
-function showNotification(message, type = 'info') {
-    // Remove existing notifications
-    const existingNotification = document.querySelector('.notification');
-    if (existingNotification) {
-        existingNotification.remove();
-    }
-    
-    // Create notification element
-    const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
-    notification.innerHTML = `
-        <div class="notification-content">
-            <span class="notification-message">${message}</span>
-            <button class="notification-close">&times;</button>
-        </div>
-    `;
-    
-    // Add styles
-    notification.style.cssText = `
-        position: fixed;
-        top: 100px;
-        right: 20px;
-        background: ${type === 'success' ? '#4CAF50' : type === 'error' ? '#f44336' : '#2196F3'};
-        color: white;
-        padding: 1rem 1.5rem;
-        border-radius: 10px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        z-index: 10000;
-        transform: translateX(100%);
-        transition: transform 0.3s ease;
-        max-width: 300px;
-    `;
-    
-    // Add to page
-    document.body.appendChild(notification);
-    
-    // Animate in
-    setTimeout(() => {
-        notification.style.transform = 'translateX(0)';
-    }, 100);
-    
-    // Close button functionality
-    const closeBtn = notification.querySelector('.notification-close');
-    closeBtn.addEventListener('click', () => {
-        notification.style.transform = 'translateX(100%)';
-        setTimeout(() => notification.remove(), 300);
-    });
-    
-    // Auto remove after 5 seconds
-    setTimeout(() => {
-        if (notification.parentNode) {
-            notification.style.transform = 'translateX(100%)';
-            setTimeout(() => notification.remove(), 300);
-        }
-    }, 5000);
-}
-
-// Scroll to top functionality
-function createScrollToTopButton() {
-    const scrollBtn = document.createElement('button');
-    scrollBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
-    scrollBtn.className = 'scroll-to-top';
-    
-    // Use the CSS variables defined in :root
-    const primary = 'linear-gradient(135deg, #f37d35 0%, #cc5e1b 100%)';
-    
-    scrollBtn.style.cssText = `
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        width: 50px;
-        height: 50px;
-        background: ${primary};
-        color: white;
-        border: none;
-        border-radius: 50%;
-        cursor: pointer;
-        font-size: 1.2rem;
-        box-shadow: 0 10px 30px rgba(243, 125, 53, 0.3);
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        opacity: 0;
-        visibility: hidden;
-        z-index: 1000;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    `;
-    
-    document.body.appendChild(scrollBtn);
-    
-    // Show/hide based on scroll position
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 300) {
-            scrollBtn.style.opacity = '1';
-            scrollBtn.style.visibility = 'visible';
-            scrollBtn.style.transform = 'translateY(0)';
+        if (isPercentage) {
+          counter.textContent = Math.floor(current) + "%";
+        } else if (hasPlus) {
+          counter.textContent = Math.floor(current) + "+";
         } else {
-            scrollBtn.style.opacity = '0';
-            scrollBtn.style.visibility = 'hidden';
-            scrollBtn.style.transform = 'translateY(20px)';
+          counter.textContent = String(Math.floor(current));
         }
+      }, 20);
     });
-    
-    // Scroll to top on click
-    scrollBtn.addEventListener('click', () => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    });
-    
-    // Hover effects
-    scrollBtn.addEventListener('mouseenter', () => {
-        scrollBtn.style.transform = 'translateY(-5px) scale(1.1)';
-        scrollBtn.style.boxShadow = '0 15px 35px rgba(243, 125, 53, 0.4)';
-    });
-    
-    scrollBtn.addEventListener('mouseleave', () => {
-        scrollBtn.style.transform = 'translateY(0) scale(1)';
-        scrollBtn.style.boxShadow = '0 10px 30px rgba(243, 125, 53, 0.3)';
-    });
-}
+  }
 
-// Initialize scroll to top button
-document.addEventListener('DOMContentLoaded', createScrollToTopButton);
-
-// Lazy loading for images (if any are added later)
-function lazyLoadImages() {
-    const images = document.querySelectorAll('img[data-src]');
-    const imageObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                img.src = img.dataset.src;
-                img.classList.remove('lazy');
-                imageObserver.unobserve(img);
-            }
-        });
-    });
-    
-    images.forEach(img => imageObserver.observe(img));
-}
-
-// Initialize lazy loading
-document.addEventListener('DOMContentLoaded', lazyLoadImages);
-
-// Typing effect for hero title
-function typeWriter(element, text, speed = 100) {
-    let i = 0;
-    element.innerHTML = '';
-    
-    function type() {
-        if (i < text.length) {
-            element.innerHTML += text.charAt(i);
-            i++;
-            setTimeout(type, speed);
-        }
-    }
-    
-    type();
-}
-
-// Initialize typing effect
-document.addEventListener('DOMContentLoaded', () => {
-    // PREVENT TRACKING DURING DEVELOPMENT/TESTING
-    const isDevelopment = window.location.hostname === 'localhost' || 
-                         window.location.hostname === '127.0.0.1' ||
-                         window.location.search.includes('debug=true');
-
-    const heroTitle = document.querySelector('.hero-title');
-    if (heroTitle) {
-        const originalText = heroTitle.textContent;
-        // Add a delay before starting the typing effect
-        setTimeout(() => {
-            typeWriter(heroTitle, originalText, 50);
-        }, 500);
-    }
-
-    // LEVEL 2: Business Tracking (Button Click Tracking)
-    // Wrap tracking in a helper to manage environment
-    function trackEvent(name, params) {
-        if (isDevelopment) {
-            console.log(`[Analytics Debug] Event: ${name}`, params);
-            return;
-        }
-        if (typeof gtag === 'function') {
-            gtag('event', name, params);
-        }
-    }
-
-    // 1. WhatsApp Button Tracking
-    const whatsappBtn = document.querySelector('.whatsapp-sticky');
-    if (whatsappBtn) {
-        whatsappBtn.addEventListener('click', () => {
-            trackEvent('whatsapp_click', {
-                'event_category': 'Engagement',
-                'event_label': 'Order Now on WhatsApp',
-                'transport_type': 'beacon'
-            });
-        });
-    }
-
-    // 2. Order/Buy Now Button Tracking (Targeting primary CTA buttons)
-    const orderButtons = document.querySelectorAll('.btn-primary, .hero-buttons .btn, [href*="wa.me"]');
-    orderButtons.forEach(btn => {
-        // Skip the sticky WhatsApp button as it's handled above
-        if (btn.classList.contains('whatsapp-sticky')) return;
-
-        btn.addEventListener('click', function() {
-            const buttonText = this.textContent.trim();
-            trackEvent('order_intent_click', {
-                'event_category': 'Conversion',
-                'event_label': buttonText,
-                'button_type': 'Primary CTA',
-                'transport_type': 'beacon'
-            });
-        });
-    });
-
-    // 3. Contact Form Submission Tracking
-    const contactForm = document.querySelector('.contact-form form');
-    if (contactForm) {
-        contactForm.addEventListener('submit', function() {
-            trackEvent('form_submission', {
-                'event_category': 'Engagement',
-                'event_label': 'Contact Form',
-                'transport_type': 'beacon'
-            });
-        });
-    }
-
-    // 4. Click-to-Call and Click-to-Email Tracking
-    const contactLinks = document.querySelectorAll('a[href^="tel:"], a[href^="mailto:"]');
-    contactLinks.forEach(link => {
-        link.addEventListener('click', function() {
-            const type = this.href.startsWith('tel:') ? 'Phone' : 'Email';
-            trackEvent('contact_lead_click', {
-                'event_category': 'Leads',
-                'event_label': type,
-                'value': this.href,
-                'transport_type': 'beacon'
-            });
-        });
-    });
-
-    // 5. Scroll Depth Tracking
-    let scrollDepths = [25, 50, 75, 100];
-    let trackedDepths = new Set();
-
-    window.addEventListener('scroll', () => {
-        const h = document.documentElement, 
-              b = document.body,
-              st = 'scrollTop',
-              sh = 'scrollHeight';
-        const percent = (h[st]||b[st]) / ((h[sh]||b[sh]) - h.clientHeight) * 100;
-
-        scrollDepths.forEach(depth => {
-            if (percent >= depth && !trackedDepths.has(depth)) {
-                trackedDepths.add(depth);
-                trackEvent('scroll_depth', {
-                    'event_category': 'Engagement',
-                    'event_label': `Reached ${depth}%`,
-                    'value': depth,
-                    'non_interaction': true
-                });
-            }
-        });
-    }, { passive: true });
-});
-
-// Counter animation for stats
-function animateCounters() {
-    const counters = document.querySelectorAll('.stat-number');
-    
-    counters.forEach(counter => {
-        const target = counter.textContent;
-        const isPercentage = target.includes('%');
-        const numericTarget = parseInt(target.replace(/\D/g, ''));
-        
-        let current = 0;
-        const increment = numericTarget / 100;
-        const timer = setInterval(() => {
-            current += increment;
-            if (current >= numericTarget) {
-                current = numericTarget;
-                clearInterval(timer);
-            }
-            
-            if (isPercentage) {
-                counter.textContent = Math.floor(current) + '%';
-            } else {
-                counter.textContent = Math.floor(current);
-            }
-        }, 20);
-    });
-}
-
-// Trigger counter animation when stats section is visible
-const statsObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
+  const statsObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
         if (entry.isIntersecting) {
-            animateCounters();
-            statsObserver.unobserve(entry.target);
+          animateCounters();
+          statsObserver.unobserve(entry.target);
         }
+      });
+    },
+    { threshold: 0.5 },
+  );
+
+  const statsSection = qs(".story-stats");
+  if (statsSection) statsObserver.observe(statsSection);
+
+  qsa(".stat-card").forEach((card) => {
+    card.addEventListener("click", () => {
+      track("stat_panel_click", { label: card.querySelector(".stat-label")?.textContent || "" });
+      qs("#products")?.scrollIntoView({ behavior: "smooth" });
     });
-}, { threshold: 0.5 });
+  });
 
-document.addEventListener('DOMContentLoaded', () => {
-    const statsSection = document.querySelector('.story-stats');
-    if (statsSection) {
-        statsObserver.observe(statsSection);
-    }
-});
-
-// Parallax effect for hero section
-window.addEventListener('scroll', () => {
-    const scrolled = window.pageYOffset;
-    const hero = document.querySelector('.hero');
-    if (hero) {
-        const rate = scrolled * -0.5;
-        hero.style.transform = `translateY(${rate}px)`;
-    }
-});
-
-// Add loading state to buttons
-document.querySelectorAll('.btn').forEach(btn => {
-    btn.addEventListener('click', function(e) {
-        if (this.classList.contains('loading')) return;
-        
-        // Don't add loading state to navigation buttons
-        if (this.getAttribute('href') && this.getAttribute('href').startsWith('#')) {
-            return;
-        }
-        
-        this.classList.add('loading');
-        const originalText = this.textContent;
-        this.textContent = 'Loading...';
-        
-        // Remove loading state after 2 seconds (simulate action)
-        setTimeout(() => {
-            this.classList.remove('loading');
-            this.textContent = originalText;
-        }, 2000);
+  qsa(".amroth-product-card").forEach((card) => {
+    card.addEventListener("click", (e) => {
+      if (e.target.closest("a, button")) return;
+      const product = card.getAttribute("data-product");
+      const sel = qs("#productInterest");
+      if (sel && product) {
+        sel.value = product;
+        sel.dispatchEvent(new Event("change", { bubbles: true }));
+      }
+      track("product_panel_click", { product: product || "" });
+      qs("#enquire")?.scrollIntoView({ behavior: "smooth" });
     });
-});
+  });
 
-// Add CSS for loading state
-const style = document.createElement('style');
-style.textContent = `
-    .btn.loading {
-        opacity: 0.7;
-        cursor: not-allowed;
-        pointer-events: none;
-    }
-    
-    .notification-content {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1rem;
-    }
-    
-    .notification-close {
-        background: none;
-        border: none;
-        color: white;
-        font-size: 1.5rem;
-        cursor: pointer;
-        padding: 0;
-        line-height: 1;
-    }
-    
-    .notification-close:hover {
-        opacity: 0.8;
-    }
-    
-    .typing-dots {
-        display: flex;
-        gap: 4px;
-    }
-    
-    .typing-dots span {
-        width: 8px;
-        height: 8px;
-        background: var(--text-muted);
-        border-radius: 50%;
-        animation: typingAnimation 1.4s infinite ease-in-out both;
-    }
-    
-    .typing-dots span:nth-child(1) { animation-delay: -0.32s; }
-    .typing-dots span:nth-child(2) { animation-delay: -0.16s; }
-    
-    @keyframes typingAnimation {
-        0%, 80%, 100% { transform: scale(0); }
-        40% { transform: scale(1); }
-    }
-`;
-document.head.appendChild(style);
-
-// Chatbot Functionality
-const chatbotToggle = document.getElementById('chatbot-toggle');
-const chatbotWindow = document.getElementById('chatbot-window');
-const chatbotClose = document.getElementById('chatbot-close');
-const chatbotInput = document.getElementById('chatbot-input');
-const chatbotSend = document.getElementById('chatbot-send');
-const chatbotMessages = document.getElementById('chatbot-messages');
-
-if (chatbotToggle && chatbotWindow) {
-    chatbotToggle.addEventListener('click', () => {
-        chatbotWindow.classList.toggle('active');
+  qsa(".faq-item .faq-question").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const item = btn.closest(".faq-item");
+      const open = item?.classList.toggle("is-open");
+      btn.setAttribute("aria-expanded", open ? "true" : "false");
     });
-}
+  });
 
-if (chatbotClose && chatbotWindow) {
-    chatbotClose.addEventListener('click', () => {
-        chatbotWindow.classList.remove('active');
-    });
-}
+  const chatbotToggle = qs("#chatbot-toggle");
+  const chatbotWindow = qs("#chatbot-window");
+  const chatbotClose = qs("#chatbot-close");
+  const chatbotInput = qs("#chatbot-input");
+  const chatbotSend = qs("#chatbot-send");
+  const chatbotMessages = qs("#chatbot-messages");
 
-const chatbotResponses = {
-    'hi': 'Hi there! Welcome to Amroth Nutrition. How can I assist you today?',
-    'hello': 'Hello! Welcome to Amroth Nutrition. What would you like to know about?',
-    'hey': 'Hey! How can I help you with Amroth products today?',
-    'amroth': 'Amroth Nutrition offers 100% natural, preservative-free instant healthy food products including multigrain mixes, sambar mix, vegetable & fruit powders, and microgreens.',
-    'products': 'We offer 5 amazing products: Multigrain Energy Mix, Instant Sambar Mix, Vegetable Powders, Fruit Powders, and Fresh Microgreens.',
-    'product': 'We offer 5 amazing products: Multigrain Energy Mix, Instant Sambar Mix, Vegetable Powders, Fruit Powders, and Fresh Microgreens.',
-    'price': 'For pricing details, please contact us via WhatsApp or email. We\'ll be happy to assist you!',
-    'cost': 'For cost details, please contact us via WhatsApp or email. We\'ll be happy to assist you!',
-    'order': 'Great! You can order by clicking on the "Order Now" button or via WhatsApp at +91 8106350955.',
-    'how to order': 'You can order by clicking on the "Order Now" button or via WhatsApp at +91 8106350955.',
-    'buy': 'You can buy our products by clicking on the "Order Now" button or via WhatsApp at +91 8106350955.',
-    'purchase': 'To purchase Amroth products, click on the "Order Now" button or contact us via WhatsApp at +91 8106350955.',
-    'contact': 'You can reach us at: Phone: +91 7702741798, Email: amrothproducts@gmail.com',
-    'email': 'You can email us at amrothproducts@gmail.com',
-    'phone': 'You can call us at +91 7702741798',
-    'whatsapp': 'You can reach us on WhatsApp at +91 8106350955',
-    'location': 'We are located in Takkellapadu Village, Amaravathi District, Andhra Pradesh.',
-    'address': 'Our address is Takkellapadu Village, Amaravathi District, Andhra Pradesh.',
-    'ingredients': 'All our products are made with 100% natural ingredients with no preservatives or artificial additives.',
-    'natural': 'Yes! All Amroth products are 100% natural with no preservatives, artificial colors, or chemicals.',
-    'preservatives': 'No! All our products are 100% natural with no preservatives, artificial colors, or chemicals.',
-    'additives': 'No! We don\'t use any artificial additives or preservatives in our products.',
-    'shipping': 'For shipping information, please contact us via WhatsApp or email.',
-    'delivery': 'For delivery information, please contact us via WhatsApp or email.',
-    'multigrain': 'Our Multigrain Energy Mix is made with 25+ natural ingredients including cereals, pulses, millets, nuts, and seeds.',
-    'sambar': 'Our Instant Sambar Mix is made with dehydrated vegetables and roasted spices for authentic taste in minutes.',
-    'vegetable': 'Our Vegetable Powders are pure dehydrated vegetables for daily nutrition.',
-    'fruit': 'Our Fruit Powders are natural fruit goodness in easy-to-use powder form.',
-    'microgreens': 'Our Fresh Microgreens are living superfoods for maximum nutrient density.',
-    'thanks': 'You\'re welcome! Is there anything else I can help you with?',
-    'thank you': 'You\'re welcome! Is there anything else I can assist you with?',
-    'ok': 'Great! Is there anything else you\'d like to know about Amroth?',
-    'okay': 'Perfect! Let me know if you need any other information about our products.',
-    'default': 'I\'m here to help! You can ask me about Amroth, our products, ingredients, ordering, pricing, or contact information.',
-};
+  function setChatOpen(open) {
+    if (!chatbotWindow || !chatbotToggle) return;
+    chatbotWindow.classList.toggle("active", open);
+    chatbotWindow.hidden = !open;
+    chatbotToggle.setAttribute("aria-expanded", open ? "true" : "false");
+  }
 
-function getBotResponse(message) {
-    const lowerMessage = message.toLowerCase();
+  chatbotToggle?.addEventListener("click", () => setChatOpen(!chatbotWindow?.classList.contains("active")));
+  chatbotClose?.addEventListener("click", () => setChatOpen(false));
+
+  const chatbotResponses = {
+    hi: "Hi — welcome to Amroth. Ask about products, ingredients, preparation or how to enquire.",
+    hello: "Hello — how can I help with Amroth products today?",
+    products:
+      "Public enquiry products today: Multigrain Powder and Instant Sambar Mix. Other category names in older materials may be unmapped until catalogue authority exists.",
+    product:
+      "Public enquiry products today: Multigrain Powder and Instant Sambar Mix. Use Request details / sample / quote on the site.",
+    multigrain:
+      "Multigrain Powder uses 25+ natural ingredients spanning cereals, millets, pulses, nuts and seeds. Add water, boil while stirring, season and serve.",
+    sambar:
+      "Instant Sambar Mix is a spice-and-dal blend for a quick sambar-style meal — add water, boil, serve with rice, idli or dosa.",
+    ingredients:
+      "Stated formulations use natural ingredients with no preservatives or artificial additives. Exact pack guidance is confirmed when you receive product details.",
+    natural: "Yes — clean-label intent: 100% natural ingredients without chemical shelf-life enhancers in stated formulations.",
+    preservatives: "No preservatives or artificial colours in our stated formulations.",
+    contact: "Call +91 7702741798 or email amrothproducts@gmail.com. WhatsApp enquiry is also available from the site.",
+    email: "Email us at amrothproducts@gmail.com.",
+    phone: "Call +91 7702741798.",
+    whatsapp: "Use Enquire on WhatsApp on this page — preferably after submitting the web form so we have your enquiry reference.",
+    enquire: "Scroll to Enquire, choose your path, and submit the form. We create one enquiry record and can continue on WhatsApp afterward.",
+    order: "We do not run self-serve checkout yet. Please submit an enquiry or WhatsApp us for details, samples or quotes.",
+    buy: "Purchases are handled through enquiry — not an online cart. Use Request Product Details or Enquire on WhatsApp.",
+    price: "Pricing is confirmed through enquiry for your channel and quantity — we do not publish a public price list here.",
+    location: "Srivallabha Sustainable Solutions / Amroth — Takkellapadu Village, Amaravathi District, Andhra Pradesh.",
+    medical: "I can only share general product and preparation information. I cannot give medical, diagnostic or nutrition therapy advice.",
+    default:
+      "I can help with Amroth products, ingredients, preparation, contact and how to enquire. I do not give medical advice. Try: products, ingredients, enquire, contact.",
+  };
+
+  function getBotResponse(message) {
+    const lower = message.toLowerCase();
+    if (/(diagnos|cure|treat|disease|diabetes|bp|blood pressure|medic)/.test(lower)) {
+      return chatbotResponses.medical;
+    }
     for (const [key, response] of Object.entries(chatbotResponses)) {
-        if (lowerMessage.includes(key)) {
-            return response;
-        }
+      if (key !== "default" && lower.includes(key)) return response;
     }
     return chatbotResponses.default;
-}
+  }
 
-function addMessage(text, isUser) {
-    const messageDiv = document.createElement('div');
-    messageDiv.className = `chat-message ${isUser ? 'user-message' : 'bot-message'}`;
-    
-    const avatar = document.createElement('div');
-    avatar.className = 'message-avatar';
-    avatar.innerHTML = isUser ? '<i class="fas fa-user"></i>' : '<i class="fas fa-leaf"></i>';
-    
-    const content = document.createElement('div');
-    content.className = 'message-content';
-    const paragraph = document.createElement('p');
-    paragraph.textContent = text;
-    content.appendChild(paragraph);
-    
-    messageDiv.appendChild(avatar);
-    messageDiv.appendChild(content);
-    
+  function addMessage(text, isUser) {
+    if (!chatbotMessages) return;
+    const messageDiv = document.createElement("div");
+    messageDiv.className = `chat-message ${isUser ? "user-message" : "bot-message"}`;
+    messageDiv.innerHTML =
+      `<div class="message-avatar" aria-hidden="true"><i class="fas ${isUser ? "fa-user" : "fa-leaf"}"></i></div>` +
+      `<div class="message-content"><p></p></div>`;
+    messageDiv.querySelector("p").textContent = text;
     chatbotMessages.appendChild(messageDiv);
     chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-}
+  }
 
-function showTypingIndicator() {
-    const typingDiv = document.createElement('div');
-    typingDiv.className = 'chat-message bot-message typing-indicator';
-    typingDiv.id = 'typing-indicator';
-    
-    const avatar = document.createElement('div');
-    avatar.className = 'message-avatar';
-    avatar.innerHTML = '<i class="fas fa-leaf"></i>';
-    
-    const content = document.createElement('div');
-    content.className = 'message-content';
-    content.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
-    
-    typingDiv.appendChild(avatar);
-    typingDiv.appendChild(content);
-    
-    chatbotMessages.appendChild(typingDiv);
-    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-}
-
-function removeTypingIndicator() {
-    const typingIndicator = document.getElementById('typing-indicator');
-    if (typingIndicator) {
-        typingIndicator.remove();
-    }
-}
-
-function sendMessage() {
-    const message = chatbotInput.value.trim();
+  function sendMessage() {
+    const message = (chatbotInput?.value || "").trim();
     if (!message) return;
-    
     addMessage(message, true);
-    chatbotInput.value = '';
-    
-    showTypingIndicator();
-    
-    setTimeout(() => {
-        removeTypingIndicator();
-        const botResponse = getBotResponse(message);
-        addMessage(botResponse, false);
-    }, 1000);
-}
+    chatbotInput.value = "";
+    window.setTimeout(() => addMessage(getBotResponse(message), false), 450);
+  }
 
-if (chatbotSend) {
-    chatbotSend.addEventListener('click', sendMessage);
-}
-
-if (chatbotInput) {
-    chatbotInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            sendMessage();
-        }
+  chatbotSend?.addEventListener("click", sendMessage);
+  chatbotInput?.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") sendMessage();
+  });
+  qsa(".quick-reply-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      if (chatbotInput) chatbotInput.value = btn.getAttribute("data-message") || "";
+      sendMessage();
     });
-}
-
-const quickReplies = document.querySelectorAll('.quick-reply-btn');
-quickReplies.forEach(btn => {
-    btn.addEventListener('click', () => {
-        const message = btn.getAttribute('data-message');
-        chatbotInput.value = message;
-        sendMessage();
-    });
-});
-
-// Amroth Form Submission to n8n Webhook
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM fully loaded');
-    console.log('Looking for amrothForm...');
-    const amrothForm = document.getElementById('amrothForm');
-    console.log('amrothForm found:', !!amrothForm);
-    if (amrothForm) {
-        console.log('Adding submit event listener to amrothForm');
-        amrothForm.addEventListener('submit', async (e) => {
-            console.log('Form submitted!');
-            e.preventDefault();
-            
-            const form = e.target;
-            const data = Object.fromEntries(new FormData(form));
-            
-            console.log('Form data to send:', data);
-            console.log('Webhook URL:', 'https://n8n.amroth.life/webhook/amroth-lead');
-            
-            try {
-                const res = await fetch('https://n8n.amroth.life/webhook/amroth-lead', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                });
-                
-                console.log('Response status:', res.status, res.statusText);
-                const responseText = await res.text();
-                console.log('Response body:', responseText);
-                
-                if (res.ok) {
-                    showNotification('Thank you! We will contact you soon.', 'success');
-                    form.reset();
-                } else {
-                    showNotification('Something went wrong. Please try again.', 'error');
-                }
-            } catch (error) {
-                console.error('Error details:', error);
-                showNotification('Network error. Please try again.', 'error');
-            }
-        });
-    }
-});
-
-console.log('Ikshwaaks Nutrition website loaded successfully!');
+  });
+})();

@@ -1,0 +1,139 @@
+﻿/**
+ * Amroth material tokens — crystal glass (Commander Golden transmission).
+ * Brand orange is accent only. Glass fill must stay thin so blur can show.
+ */
+:root {
+  --amroth-brand: #f37d35;
+  --amroth-brand-hover: #cc5e1b;
+  --amroth-brand-active: #a84a14;
+  --amroth-brand-soft: color-mix(in srgb, #f37d35 18%, transparent);
+  --amroth-brand-mist: color-mix(in srgb, #f37d35 10%, transparent);
+  --amroth-leaf: #2f5c3a;
+  --amroth-leaf-soft: color-mix(in srgb, #2f5c3a 14%, transparent);
+
+  --amroth-ink: #142820;
+  --amroth-ink-secondary: #3a5248;
+  --amroth-ink-muted: #5a6f66;
+  --amroth-ink-faint: #7e9188;
+  --amroth-ink-inverse: #fffdfb;
+
+  /* Rich mid canvas — luminance range for glass to transmit */
+  --amroth-shell-base: #cfdcd5;
+  --amroth-atmos-cool: #5f8490;
+  --amroth-atmos-leaf: #4a7c6e;
+  --amroth-atmos-warm: #d4894a;
+  --amroth-atmosphere:
+    radial-gradient(ellipse 82% 56% at 50% -12%, rgba(255, 255, 255, 0.97) 0%, rgba(255, 255, 255, 0.32) 36%, transparent 68%),
+    radial-gradient(ellipse 50% 44% at 94% 8%, color-mix(in srgb, var(--amroth-atmos-cool) 36%, transparent) 0%, transparent 72%),
+    radial-gradient(ellipse 48% 46% at 4% 92%, color-mix(in srgb, var(--amroth-atmos-leaf) 30%, transparent) 0%, transparent 74%),
+    radial-gradient(ellipse 38% 34% at 74% 70%, color-mix(in srgb, var(--amroth-atmos-warm) 16%, transparent) 0%, transparent 70%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, transparent 36%, rgba(20, 40, 34, 0.12) 100%);
+  --amroth-atmosphere-bloom:
+    radial-gradient(circle at 22% 18%, rgba(255, 255, 255, 0.5) 0%, transparent 44%),
+    radial-gradient(circle at 58% 28%, rgba(232, 248, 240, 0.38) 0%, transparent 48%),
+    radial-gradient(circle at 78% 76%, rgba(28, 48, 40, 0.18) 0%, transparent 48%);
+
+  /* Stronger blur = clearer crystal frost */
+  --amroth-glass-filter: blur(22px) saturate(1.95);
+  --amroth-glass-filter-strong: blur(26px) saturate(1.95);
+  --amroth-glass-filter-popup: blur(32px) saturate(2.05);
+  --amroth-glass-filter-control: blur(16px) saturate(1.85);
+
+  /* Thin crystal fills */
+  --amroth-glass-atmosphere: rgba(255, 255, 255, 0.12);
+  --amroth-glass-surface: rgba(255, 255, 255, 0.16);
+  --amroth-glass-raised: rgba(255, 255, 255, 0.24);
+  --amroth-glass-strong: rgba(255, 255, 255, 0.32);
+  --amroth-glass-principal: linear-gradient(
+    158deg,
+    rgba(255, 255, 255, 0.42) 0%,
+    rgba(255, 255, 255, 0.14) 46%,
+    rgba(255, 255, 255, 0.26) 100%
+  );
+  --amroth-glass-support: linear-gradient(
+    155deg,
+    rgba(255, 255, 255, 0.32) 0%,
+    rgba(255, 255, 255, 0.12) 100%
+  );
+  --amroth-glass-control: linear-gradient(
+    160deg,
+    rgba(255, 255, 255, 0.55) 0%,
+    rgba(255, 255, 255, 0.28) 100%
+  );
+  --amroth-glass-menu: linear-gradient(
+    165deg,
+    rgba(255, 255, 255, 0.72) 0%,
+    rgba(248, 252, 250, 0.58) 100%
+  );
+  --amroth-glass-fallback: rgba(255, 252, 250, 0.92);
+
+  --amroth-glass-border: rgba(255, 255, 255, 0.62);
+  --amroth-glass-border-strong: rgba(255, 255, 255, 0.82);
+
+  /* Edge light = glass identity */
+  --amroth-fresnel: inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  --amroth-fresnel-side: inset 1px 0 0 rgba(255, 255, 255, 0.4), inset -1px 0 0 rgba(255, 255, 255, 0.22);
+  --amroth-rim: inset 0 0 0 1px rgba(255, 255, 255, 0.45);
+  --amroth-elev-contact: 0 2px 10px rgba(12, 36, 32, 0.09);
+  --amroth-elev-soft: 0 12px 32px rgba(12, 36, 32, 0.12);
+  --amroth-elev-drop: 0 20px 48px rgba(12, 36, 32, 0.16);
+  --amroth-elev-panel:
+    var(--amroth-elev-drop),
+    var(--amroth-rim),
+    var(--amroth-fresnel),
+    var(--amroth-fresnel-side);
+  --amroth-elev-control:
+    0 4px 16px rgba(12, 36, 32, 0.08),
+    var(--amroth-fresnel),
+    var(--amroth-rim);
+  --amroth-elev-menu:
+    0 18px 40px rgba(12, 36, 32, 0.18),
+    0 4px 12px rgba(12, 36, 32, 0.08),
+    var(--amroth-fresnel),
+    var(--amroth-rim);
+
+  --amroth-focus-ring: 0 0 0 3px color-mix(in srgb, var(--amroth-brand) 42%, transparent);
+
+  --amroth-font: "DM Sans", "Segoe UI", system-ui, sans-serif;
+  --amroth-font-display: "Fraunces", Georgia, serif;
+  --amroth-space-1: 8px;
+  --amroth-space-2: 16px;
+  --amroth-space-3: 24px;
+  --amroth-space-4: 32px;
+  --amroth-space-5: 48px;
+  --amroth-radius-sm: 12px;
+  --amroth-radius-md: 16px;
+  --amroth-radius-lg: 22px;
+  --amroth-radius-xl: 28px;
+  --amroth-touch: 48px;
+  --amroth-content: 1120px;
+  --amroth-prose: 68ch;
+  --amroth-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --amroth-dur: 0.28s;
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  :root {
+    --amroth-glass-principal: var(--amroth-glass-fallback);
+    --amroth-glass-support: var(--amroth-glass-fallback);
+    --amroth-glass-control: var(--amroth-glass-fallback);
+    --amroth-glass-menu: var(--amroth-glass-fallback);
+    --amroth-glass-filter: none;
+    --amroth-glass-filter-strong: none;
+    --amroth-glass-filter-popup: none;
+    --amroth-glass-filter-control: none;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  :root {
+    --amroth-glass-principal: var(--amroth-glass-fallback);
+    --amroth-glass-support: #f4faf7;
+    --amroth-glass-control: #f8fbf9;
+    --amroth-glass-menu: #f8fbf9;
+    --amroth-glass-filter: none;
+    --amroth-glass-filter-strong: none;
+    --amroth-glass-filter-popup: none;
+    --amroth-glass-filter-control: none;
+  }
+}

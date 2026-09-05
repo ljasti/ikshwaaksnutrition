@@ -1,4 +1,4 @@
-/* Reset and Base Styles */
+﻿/* Reset and Base Styles */
 :root {
     /* Color Palette - Refined for a "Rich" look */
     --primary: #f37d35; /* More vibrant yet professional orange */
@@ -3018,3 +3018,11 @@ body {
 
 
 
+
+/* W1A: surfaces owned by amroth-visual-system.css — legacy bridges only */
+.header--w1 .header-brand, .header--w1 .header-seals-container { display: none; }
+.scroll-to-top.show { opacity: 1; visibility: visible; }
+.amroth-site > header.header:not(.amroth-header),
+.amroth-site > footer.footer:not(.amroth-footer) { display: none; }
+.amroth-site main { max-width: none; }
+.amroth-site .amroth-page-main { max-width: var(--amroth-content, 1120px); }
