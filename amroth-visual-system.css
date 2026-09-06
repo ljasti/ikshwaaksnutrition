@@ -578,16 +578,16 @@
   align-items: center;
   min-height: var(--amroth-touch);
   padding: 0 0.75rem;
-  color: var(--amroth-ink-secondary);
+  color: var(--amroth-ink);
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 0.95rem;
   border-radius: var(--amroth-radius-sm);
 }
 
 .amroth-header .nav-link:hover,
 .amroth-header .nav-link[aria-current="page"] {
-  color: var(--amroth-ink);
+  color: var(--amroth-brand-active);
   background: var(--amroth-brand-mist);
 }
 
@@ -596,10 +596,11 @@
   margin: 0;
   padding: 0.35rem 1rem 0.55rem;
   font-size: 0.8rem;
-  color: var(--amroth-ink-muted);
+  color: var(--amroth-ink-secondary);
   text-align: center;
   border-top: 1px solid var(--amroth-glass-border);
   background: transparent;
+  font-weight: 500;
 }
 
 .amroth-header .hamburger {
@@ -1440,18 +1441,45 @@
 .amroth-site .hero-title,
 .amroth-site .hero--amroth .hero-title {
   color: var(--amroth-ink) !important;
-  text-shadow: none !important;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35) !important;
 }
 
-.amroth-site .hero-description {
+.amroth-site .hero-description,
+.amroth-site .section-lead,
+.amroth-site .honest-note,
+.amroth-site .stat-label,
+.amroth-site .path-card,
+.amroth-site .amroth-product-card p,
+.amroth-site .faq-answer,
+.amroth-site .contact-alt,
+.amroth-site .why-list,
+.amroth-site .steps-simple {
   color: var(--amroth-ink-secondary) !important;
-  text-shadow: none !important;
+}
+
+.amroth-site .amroth-header .nav-link {
+  color: var(--amroth-ink) !important;
+}
+
+.amroth-site .amroth-header .legal-once {
+  color: var(--amroth-ink-secondary) !important;
+}
+
+.amroth-site .amroth-footer,
+.amroth-site .amroth-footer a,
+.amroth-site .amroth-footer .footer-copy {
+  color: var(--amroth-ink) !important;
+}
+
+.amroth-site .amroth-footer a:hover {
+  color: var(--amroth-brand-hover) !important;
 }
 
 .amroth-site .faq-question {
   background: transparent !important;
   background-color: transparent !important;
   box-shadow: none !important;
+  color: var(--amroth-ink) !important;
 }
 
 .amroth-site .story-stats {

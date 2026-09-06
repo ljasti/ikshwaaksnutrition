@@ -11,10 +11,11 @@
   --amroth-leaf: #2f5c3a;
   --amroth-leaf-soft: color-mix(in srgb, #2f5c3a 14%, transparent);
 
-  --amroth-ink: #142820;
-  --amroth-ink-secondary: #3a5248;
-  --amroth-ink-muted: #5a6f66;
-  --amroth-ink-faint: #7e9188;
+  /* Darker ink for readable type on transparent glass over bright kitchen */
+  --amroth-ink: #0c1a14;
+  --amroth-ink-secondary: #1e322a;
+  --amroth-ink-muted: #2f453c;
+  --amroth-ink-faint: #3f564c;
   --amroth-ink-inverse: #fffdfb;
 
   /* Mid canvas — keep color/detail readable so panel frost has something to transmit */
