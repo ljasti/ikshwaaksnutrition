@@ -29,10 +29,11 @@
 .amroth-site::after {
   content: "";
   position: fixed;
-  inset: -12%;
+  inset: -8%;
   z-index: -2;
   background: var(--amroth-atmosphere-bloom);
-  filter: blur(32px);
+  /* No canvas blur — frost belongs on panels only */
+  opacity: 0.9;
   pointer-events: none;
 }
 
@@ -51,19 +52,19 @@
   height: 100%;
   object-fit: cover;
   object-position: center;
-  /* Soft luminance field for thin crystal glass to transmit */
-  opacity: 0.58;
-  filter: blur(28px) saturate(1.28) brightness(1.1) contrast(1.05);
-  transform: scale(1.12);
+  /* Keep photo sharp + vivid so panel backdrop-filter can frost it */
+  /* Soft canvas blur — panels stay more transparent */
+  opacity: 0.82;
+  filter: blur(12px) saturate(1.12) brightness(1.03) contrast(1.04);
+  transform: scale(1.08);
 }
 
 .amroth-backdrop__scrim {
   position: absolute;
   inset: 0;
+  /* Light seat only — avoid washing out the scene */
   background:
-    radial-gradient(140% 70% at 50% -10%, rgba(255, 255, 255, 0.22) 0%, transparent 48%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, transparent 38%, rgba(12, 36, 32, 0.12) 100%),
-    color-mix(in srgb, var(--amroth-shell-base) 18%, transparent);
+    linear-gradient(180deg, rgba(213, 208, 201, 0.2) 0%, transparent 28%, rgba(12, 36, 32, 0.1) 100%);
 }
 
 .amroth-site > *:not(.amroth-backdrop) {
@@ -119,6 +120,38 @@
 }
 
 /* INTERACTIVE_GLASS_START */
+/*
+ * Chrome material = header/footer recipe (source of truth).
+ * Panels reuse the same fill + blur so web and mobile match the chrome.
+ */
+.amroth-site {
+  /* Header/footer chrome — denser for legibility */
+  --amroth-chrome-fill: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.42) 0%,
+    rgba(255, 255, 255, 0.22) 100%
+  );
+  --amroth-chrome-fill-strong: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.55) 0%,
+    rgba(255, 255, 255, 0.32) 100%
+  );
+  /* Content panels — more transparent so frost/blur reads through */
+  --amroth-panel-fill: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.22) 0%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  --amroth-panel-fill-strong: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.32) 0%,
+    rgba(255, 255, 255, 0.16) 100%
+  );
+  --amroth-chrome-filter: var(--amroth-glass-filter-strong);
+  --amroth-chrome-border: var(--amroth-glass-border-strong);
+  --amroth-chrome-shadow: var(--amroth-elev-contact), var(--amroth-fresnel);
+}
+
 /* Single glass layer per panel — interactive lift (transform on hover only) */
 .amroth-site .amroth-glass,
 .amroth-site .amroth-surface,
@@ -127,7 +160,8 @@
 .amroth-site .stat-card,
 .amroth-site .blog-card-amroth,
 .amroth-site .faq-item,
-.amroth-site .chatbot-window {
+.amroth-site .chatbot-window,
+.amroth-site .support-panel {
   position: relative;
   transition:
     transform 0.28s cubic-bezier(0.4, 0, 0.2, 1),
@@ -140,13 +174,28 @@
 .amroth-site .hero-well.amroth-glass,
 .amroth-site .enquiry-shell.amroth-glass,
 .amroth-site .stat-card.amroth-glass,
-.amroth-site .chatbot-window {
-  background: var(--amroth-glass-principal);
-  -webkit-backdrop-filter: var(--amroth-glass-filter-popup);
-  backdrop-filter: var(--amroth-glass-filter-popup);
-  border: 1px solid var(--amroth-glass-border-strong);
+.amroth-site .chatbot-window,
+.amroth-site .support-panel,
+.amroth-site .amroth-surface,
+.amroth-site .amroth-product-card,
+.amroth-site .path-card,
+.amroth-site .blog-card-amroth,
+.amroth-site .faq-item {
+  /* Transparent panel glass — blur does the frost */
+  background: var(--amroth-panel-fill);
+  -webkit-backdrop-filter: var(--amroth-chrome-filter);
+  backdrop-filter: var(--amroth-chrome-filter);
+  border: 1px solid var(--amroth-chrome-border);
+  box-shadow: var(--amroth-chrome-shadow), var(--amroth-elev-soft);
+}
+
+.amroth-site .amroth-glass,
+.amroth-site .hero-well.amroth-glass,
+.amroth-site .enquiry-shell.amroth-glass,
+.amroth-site .stat-card.amroth-glass,
+.amroth-site .chatbot-window,
+.amroth-site .support-panel {
   border-radius: var(--amroth-radius-lg);
-  box-shadow: var(--amroth-elev-panel);
 }
 
 .amroth-site .amroth-surface,
@@ -154,12 +203,7 @@
 .amroth-site .path-card,
 .amroth-site .blog-card-amroth,
 .amroth-site .faq-item {
-  background: var(--amroth-glass-support);
-  -webkit-backdrop-filter: var(--amroth-glass-filter);
-  backdrop-filter: var(--amroth-glass-filter);
-  border: 1px solid var(--amroth-glass-border);
   border-radius: var(--amroth-radius-md);
-  box-shadow: var(--amroth-elev-soft), var(--amroth-rim), var(--amroth-fresnel);
 }
 
 .amroth-site .path-card,
@@ -186,7 +230,7 @@
   color: inherit;
 }
 
-/* Hover must beat legacy !important floors — lift stays on the panel face */
+/* Hover — stay in chrome material family */
 .amroth-site .path-card:hover,
 .amroth-site .path-card:focus-visible,
 .amroth-site .stat-card:hover,
@@ -196,12 +240,12 @@
 .amroth-site .faq-item:hover,
 .amroth-site .support-panel:hover {
   transform: translateY(-6px);
-  border-color: rgba(255, 255, 255, 0.95) !important;
-  background: linear-gradient(165deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.14) 100%) !important;
+  border-color: var(--amroth-chrome-border) !important;
+  background: var(--amroth-panel-fill-strong) !important;
   box-shadow:
     0 24px 48px rgba(12, 36, 32, 0.16),
-    inset 0 1px 0 rgba(255, 255, 255, 0.95),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+    var(--amroth-fresnel),
+    var(--amroth-rim);
 }
 
 .amroth-site .path-card:active,
@@ -215,11 +259,11 @@
 .amroth-site .path-card.is-selected {
   transform: translateY(-3px);
   background: linear-gradient(
-    165deg,
-    color-mix(in srgb, var(--amroth-brand) 14%, rgba(255, 255, 255, 0.32)) 0%,
-    rgba(255, 255, 255, 0.14) 100%
+    180deg,
+    color-mix(in srgb, var(--amroth-brand) 14%, rgba(255, 255, 255, 0.5)) 0%,
+    color-mix(in srgb, var(--amroth-brand) 8%, rgba(255, 255, 255, 0.26)) 100%
   ) !important;
-  border-color: color-mix(in srgb, var(--amroth-brand) 40%, rgba(255, 255, 255, 0.65)) !important;
+  border-color: color-mix(in srgb, var(--amroth-brand) 35%, var(--amroth-chrome-border)) !important;
 }
 
 .amroth-site .story-stats {
@@ -483,27 +527,24 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.42) 0%,
-    rgba(255, 255, 255, 0.22) 100%
-  );
-  -webkit-backdrop-filter: var(--amroth-glass-filter-strong);
-  backdrop-filter: var(--amroth-glass-filter-strong);
-  border-bottom: 1px solid var(--amroth-glass-border-strong);
-  box-shadow: var(--amroth-elev-contact), var(--amroth-fresnel);
+  background: var(--amroth-chrome-fill);
+  -webkit-backdrop-filter: var(--amroth-chrome-filter);
+  backdrop-filter: var(--amroth-chrome-filter);
+  border-bottom: 1px solid var(--amroth-chrome-border);
+  box-shadow: var(--amroth-chrome-shadow);
   width: 100%;
   left: auto;
   padding: 0;
+  overflow: visible;
 }
 
 .amroth-site .amroth-header.header.scrolled {
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.55) 0%,
-    rgba(255, 255, 255, 0.32) 100%
-  );
+  background: var(--amroth-chrome-fill-strong);
   padding: 0;
+}
+
+.amroth-site .amroth-header .navbar {
+  background: transparent;
 }
 
 .amroth-header .nav-container {
@@ -593,10 +634,10 @@
     right: 0.75rem;
     width: auto;
     height: auto;
-    background: var(--amroth-glass-principal);
-    -webkit-backdrop-filter: var(--amroth-glass-filter-popup);
-    backdrop-filter: var(--amroth-glass-filter-popup);
-    border: 1px solid var(--amroth-glass-border);
+    background: var(--amroth-chrome-fill);
+    -webkit-backdrop-filter: var(--amroth-chrome-filter);
+    backdrop-filter: var(--amroth-chrome-filter);
+    border: 1px solid var(--amroth-chrome-border);
     border-radius: var(--amroth-radius-lg);
     box-shadow: var(--amroth-elev-panel);
     flex-direction: column;
@@ -1202,10 +1243,11 @@
 .amroth-footer {
   margin-top: var(--amroth-space-4);
   padding: var(--amroth-space-4) 1.25rem var(--amroth-space-3);
-  border-top: 1px solid var(--amroth-glass-border);
-  background: var(--amroth-glass-atmosphere);
-  -webkit-backdrop-filter: var(--amroth-glass-filter);
-  backdrop-filter: var(--amroth-glass-filter);
+  border-top: 1px solid var(--amroth-chrome-border);
+  background: var(--amroth-chrome-fill);
+  -webkit-backdrop-filter: var(--amroth-chrome-filter);
+  backdrop-filter: var(--amroth-chrome-filter);
+  box-shadow: var(--amroth-chrome-shadow);
 }
 
 .amroth-footer .footer-content {
@@ -1352,8 +1394,8 @@
 @media (prefers-reduced-motion: reduce) {
   .amroth-site .amroth-reveal { animation: none; }
   .amroth-backdrop__img {
-    filter: blur(20px) saturate(0.8);
-    opacity: 0.18;
+    filter: saturate(0.95);
+    opacity: 0.55;
   }
 }
 
@@ -1415,4 +1457,63 @@
 .amroth-site .story-stats {
   border-top: 0;
   padding-top: 0;
+}
+
+/*
+ * Legacy styles.css ≤1200px paints solid #fff on .header / .navbar.
+ * Force chrome material on mobile so header, footer, and panels match web.
+ */
+@media (max-width: 1200px) {
+  .amroth-site .amroth-header.header,
+  .amroth-site .amroth-header {
+    position: sticky !important;
+    background: var(--amroth-chrome-fill) !important;
+    background-image: var(--amroth-chrome-fill) !important;
+    overflow: visible !important;
+    -webkit-backdrop-filter: var(--amroth-chrome-filter) !important;
+    backdrop-filter: var(--amroth-chrome-filter) !important;
+    border-bottom: 1px solid var(--amroth-chrome-border) !important;
+    box-shadow: var(--amroth-chrome-shadow) !important;
+  }
+
+  .amroth-site .amroth-header .navbar,
+  .amroth-site .amroth-header .nav-container {
+    background: transparent !important;
+    background-image: none !important;
+  }
+
+  .amroth-site .amroth-header .nav-menu {
+    background: var(--amroth-chrome-fill) !important;
+    -webkit-backdrop-filter: var(--amroth-chrome-filter) !important;
+    backdrop-filter: var(--amroth-chrome-filter) !important;
+  }
+}
+
+.amroth-site footer.footer.amroth-footer,
+.amroth-site .amroth-footer {
+  background: var(--amroth-chrome-fill) !important;
+  background-image: var(--amroth-chrome-fill) !important;
+  -webkit-backdrop-filter: var(--amroth-chrome-filter) !important;
+  backdrop-filter: var(--amroth-chrome-filter) !important;
+  border-top: 1px solid var(--amroth-chrome-border) !important;
+}
+
+@media (max-width: 899px) {
+  .amroth-site .amroth-glass,
+  .amroth-site .hero-well.amroth-glass,
+  .amroth-site .enquiry-shell.amroth-glass,
+  .amroth-site .stat-card,
+  .amroth-site .amroth-surface,
+  .amroth-site .amroth-product-card,
+  .amroth-site .path-card,
+  .amroth-site .blog-card-amroth,
+  .amroth-site .faq-item,
+  .amroth-site .support-panel,
+  .amroth-site .chatbot-window {
+    background: var(--amroth-panel-fill) !important;
+    background-image: var(--amroth-panel-fill) !important;
+    -webkit-backdrop-filter: var(--amroth-chrome-filter) !important;
+    backdrop-filter: var(--amroth-chrome-filter) !important;
+    border-color: var(--amroth-chrome-border) !important;
+  }
 }

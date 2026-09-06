@@ -17,21 +17,21 @@
   --amroth-ink-faint: #7e9188;
   --amroth-ink-inverse: #fffdfb;
 
-  /* Rich mid canvas — luminance range for glass to transmit */
-  --amroth-shell-base: #cfdcd5;
+  /* Mid canvas — keep color/detail readable so panel frost has something to transmit */
+  --amroth-shell-base: #d5d0c9;
   --amroth-atmos-cool: #5f8490;
   --amroth-atmos-leaf: #4a7c6e;
   --amroth-atmos-warm: #d4894a;
   --amroth-atmosphere:
-    radial-gradient(ellipse 82% 56% at 50% -12%, rgba(255, 255, 255, 0.97) 0%, rgba(255, 255, 255, 0.32) 36%, transparent 68%),
-    radial-gradient(ellipse 50% 44% at 94% 8%, color-mix(in srgb, var(--amroth-atmos-cool) 36%, transparent) 0%, transparent 72%),
-    radial-gradient(ellipse 48% 46% at 4% 92%, color-mix(in srgb, var(--amroth-atmos-leaf) 30%, transparent) 0%, transparent 74%),
-    radial-gradient(ellipse 38% 34% at 74% 70%, color-mix(in srgb, var(--amroth-atmos-warm) 16%, transparent) 0%, transparent 70%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, transparent 36%, rgba(20, 40, 34, 0.12) 100%);
+    radial-gradient(ellipse 70% 48% at 50% -8%, rgba(255, 255, 255, 0.35) 0%, transparent 62%),
+    radial-gradient(ellipse 46% 40% at 92% 10%, color-mix(in srgb, var(--amroth-atmos-cool) 22%, transparent) 0%, transparent 70%),
+    radial-gradient(ellipse 44% 42% at 6% 90%, color-mix(in srgb, var(--amroth-atmos-leaf) 18%, transparent) 0%, transparent 72%),
+    radial-gradient(ellipse 36% 32% at 78% 72%, color-mix(in srgb, var(--amroth-atmos-warm) 20%, transparent) 0%, transparent 68%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, transparent 40%, rgba(20, 40, 34, 0.08) 100%);
   --amroth-atmosphere-bloom:
-    radial-gradient(circle at 22% 18%, rgba(255, 255, 255, 0.5) 0%, transparent 44%),
-    radial-gradient(circle at 58% 28%, rgba(232, 248, 240, 0.38) 0%, transparent 48%),
-    radial-gradient(circle at 78% 76%, rgba(28, 48, 40, 0.18) 0%, transparent 48%);
+    radial-gradient(circle at 18% 22%, color-mix(in srgb, var(--amroth-brand) 28%, transparent) 0%, transparent 46%),
+    radial-gradient(circle at 82% 36%, color-mix(in srgb, var(--amroth-brand) 34%, transparent) 0%, transparent 48%),
+    radial-gradient(circle at 48% 88%, color-mix(in srgb, var(--amroth-brand) 22%, transparent) 0%, transparent 46%);
 
   /* Stronger blur = clearer crystal frost */
   --amroth-glass-filter: blur(22px) saturate(1.95);

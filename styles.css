@@ -3026,3 +3026,11 @@ body {
 .amroth-site > footer.footer:not(.amroth-footer) { display: none; }
 .amroth-site main { max-width: none; }
 .amroth-site .amroth-page-main { max-width: var(--amroth-content, 1120px); }
+
+@media (max-width: 1200px) {
+    .amroth-site .header.amroth-header,
+    .amroth-site .amroth-header .navbar {
+        background: transparent;
+        overflow: visible;
+    }
+}
