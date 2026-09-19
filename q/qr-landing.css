@@ -1,0 +1,54 @@
+/* Permanent Amroth QR landing — minimal, focused layout: exactly two clear choices.
+   Reuses existing tokens/.btn/.amroth-glass from /amroth-material-tokens.css and /styles.css;
+   adds only the layout this page-type needs. */
+.qr-landing-main {
+	min-height: 80vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: var(--amroth-space-4, 32px) var(--amroth-space-2, 16px);
+}
+.qr-landing-card {
+	max-width: 480px;
+	width: 100%;
+	text-align: center;
+	padding: var(--amroth-space-5, 48px) var(--amroth-space-4, 32px);
+}
+.qr-landing-card .readiness {
+	display: inline-block;
+	margin-bottom: var(--amroth-space-2, 16px);
+}
+.qr-landing-card h1 {
+	margin: 0 0 var(--amroth-space-1, 8px);
+}
+.qr-landing-card .qr-landing-sub {
+	margin: 0 0 var(--amroth-space-4, 32px);
+	opacity: 0.85;
+}
+.qr-landing-choices {
+	display: flex;
+	flex-direction: column;
+	gap: var(--amroth-space-2, 16px);
+}
+.qr-landing-choices .btn {
+	width: 100%;
+	font-size: 1.05rem;
+	padding-block: var(--amroth-space-2, 16px);
+}
+.qr-landing-notice {
+	margin-top: var(--amroth-space-3, 24px);
+	padding: var(--amroth-space-2, 16px);
+	border-radius: var(--amroth-radius-sm, 12px);
+	background: rgba(0, 0, 0, 0.06);
+	font-size: 0.9rem;
+}
+.qr-landing-honest {
+	margin-top: var(--amroth-space-3, 24px);
+	font-size: 0.8rem;
+	opacity: 0.7;
+}
+@media (min-width: 560px) {
+	.qr-landing-choices {
+		flex-direction: row;
+	}
+}
